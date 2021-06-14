@@ -10,10 +10,12 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./source/DSP2833x_ADC_cal.obj" \
 "./source/DSP2833x_CodeStartBranch.obj" \
 "./source/DSP2833x_DefaultIsr.obj" \
 "./source/DSP2833x_GlobalVariableDefs.obj" \
 "./source/DSP2833x_PieVect.obj" \
+"./source/DSP2833x_SysCtrl.obj" \
 "./source/DSP2833x_usDelay.obj" \
 "./source/main.obj" \
 "../DSP2833x_Headers_nonBIOS.cmd" \
@@ -162,9 +164,9 @@ SIN_COS_FROM_EMPTY.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "source\DSP2833x_CodeStartBranch.obj" "source\DSP2833x_DefaultIsr.obj" "source\DSP2833x_GlobalVariableDefs.obj" "source\DSP2833x_PieVect.obj" "source\DSP2833x_usDelay.obj" "source\main.obj" 
-	-$(RM) "source\DSP2833x_DefaultIsr.d" "source\DSP2833x_GlobalVariableDefs.d" "source\DSP2833x_PieVect.d" "source\main.d" 
-	-$(RM) "source\DSP2833x_CodeStartBranch.d" "source\DSP2833x_usDelay.d" 
+	-$(RM) "source\DSP2833x_ADC_cal.obj" "source\DSP2833x_CodeStartBranch.obj" "source\DSP2833x_DefaultIsr.obj" "source\DSP2833x_GlobalVariableDefs.obj" "source\DSP2833x_PieVect.obj" "source\DSP2833x_SysCtrl.obj" "source\DSP2833x_usDelay.obj" "source\main.obj" 
+	-$(RM) "source\DSP2833x_DefaultIsr.d" "source\DSP2833x_GlobalVariableDefs.d" "source\DSP2833x_PieVect.d" "source\DSP2833x_SysCtrl.d" "source\main.d" 
+	-$(RM) "source\DSP2833x_ADC_cal.d" "source\DSP2833x_CodeStartBranch.d" "source\DSP2833x_usDelay.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
