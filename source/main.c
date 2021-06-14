@@ -20,6 +20,16 @@ Uint16 Voltage1[1500];
 Uint16 Voltage2[1500];
 
 
+#if 0
+
+extern Uint16 RamfuncsLoadStart;
+extern Uint16 RamfuncsLoadEnd;
+extern Uint16 RamfuncsRunStart;
+
+#endif
+
+
+
 int16 min_value_actual = 2000;
 int16 min_value_last = 2000;
 int16 min_value_result;
@@ -87,6 +97,13 @@ int main(void)
     // This function is found in DSP2833x_PieVect.c.
     //
     InitPieVectTable();
+
+
+#if 0
+    /* FLASHBOL FUTÁSHOZ */
+        MemCopy(&RamfuncsLoadStart, &RamfuncsLoadEnd, &RamfuncsRunStart);
+        InitFlash();
+#endif
 
     //
     // Interrupts that are used in this example are re-mapped to
