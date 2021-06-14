@@ -45,46 +45,43 @@ int main(void)
 #endif
     EDIS;
 
+/* ADC freki beaalitas */
 
     EALLOW;
     SysCtrlRegs.HISPCP.all = ADC_MODCLK;
     EDIS;
 
-    //
-    // Step 2. Initialize GPIO:
-    // This example function is found in the DSP2833x_Gpio.c file and
-    // illustrates how to set the GPIO to it's default state.
-    //
-    // InitGpio();  // Skipped for this example
 
-    //
-    // Step 3. Clear all interrupts and initialize PIE vector table:
-    // Disable CPU interrupts
-    //
-    DINT;
 
-    //
-    // Initialize the PIE control registers to their default state.
-    // The default state is all PIE interrupts disabled and flags
-    // are cleared.
-    // This function is found in the DSP2833x_PieCtrl.c file.
-    //
+#if 0
+     InitGpio();
+#endif
+
+
+    DINT;     // Disable CPU interrupts
+
+    /*
+     Initialize the PIE control registers to their default state.
+     The default state is all PIE interrupts disabled and flags
+     are cleared.
+    */
+
     InitPieCtrl();
 
-    //
     // Disable CPU interrupts and clear all CPU interrupt flags:
-    //
+
     IER = 0x0000;
     IFR = 0x0000;
 
-    //
-    // Initialize the PIE vector table with pointers to the shell Interrupt
-    // Service Routines (ISR).
-    // This will populate the entire table, even if the interrupt
-    // is not used in this example.  This is useful for debug purposes.
-    // The shell ISR routines are found in DSP2833x_DefaultIsr.c.
-    // This function is found in DSP2833x_PieVect.c.
-    //
+    /*
+     Initialize the PIE vector table with pointers to the shell Interrupt
+     Service Routines (ISR).
+     This will populate the entire table, even if the interrupt
+     is not used in this example.  This is useful for debug purposes.
+     The shell ISR routines are found in DSP2833x_DefaultIsr.c.
+     This function is found in DSP2833x_PieVect.c.
+    */
+
     InitPieVectTable();
 
 #if 0
@@ -93,35 +90,19 @@ int main(void)
     InitFlash();
 #endif
 
-    //
-    // Interrupts that are used in this example are re-mapped to
-    // ISR functions found within this file.
-    //
-    EALLOW;
-    // This is needed to write to EALLOW protected register
+
+    EALLOW; // This is needed to write to EALLOW protected register
     PieVectTable.ADCINT = &adc_isr;
-    EDIS;
-    // This is needed to disable write to EALLOW protected registers
+    EDIS;   // This is needed to disable write to EALLOW protected registers
 
-    //
-    // Step 4. Initialize all the Device Peripherals:
-    // This function is found in DSP2833x_InitPeripherals.c
-    //
-    // InitPeripherals(); // Not required for this example
-    InitAdc();  // For this example, init the ADC
 
-    // Step 5. User specific code, enable interrupts:
-    //
+    InitAdc();
 
-    //
-    // Enable ADCINT in PIE
-    //
-    PieCtrlRegs.PIEIER1.bit.INTx6 = 1;
+    PieCtrlRegs.PIEIER1.bit.INTx6 = 1;  // Enable ADCINT in PIE
     IER |= M_INT1;      // Enable CPU Interrupt 1
-    EINT;
-    // Enable Global interrupt INTM
-    ERTM;
-    // Enable Global realtime interrupt DBGM
+    EINT; // Enable Global interrupt INTMk
+    ERTM;  // Enable Global realtime interrupt DBGM
+
 
     LoopCount = 0;
     ConversionCount = 0;
