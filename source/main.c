@@ -11,6 +11,17 @@
 //
 __interrupt void adc_isr(void);
 
+
+/* FLASHBOL FUTTATASHOZ */
+// Kell még MemCopy és   InitFlash az InitPieVectTable(); után
+
+extern Uint16 RamfuncsLoadStart;
+extern Uint16 RamfuncsLoadEnd;
+extern Uint16 RamfuncsRunStart;
+
+
+
+
 //
 // Globals
 //
@@ -87,6 +98,12 @@ int main(void)
     // This function is found in DSP2833x_PieVect.c.
     //
     InitPieVectTable();
+
+
+/* FLASHBÕL FUTÁSHOZ */
+    MemCopy(&RamfuncsLoadStart, &RamfuncsLoadEnd, &RamfuncsRunStart);
+    InitFlash();
+/* **************** */
 
     //
     // Interrupts that are used in this example are re-mapped to
