@@ -20,8 +20,8 @@ ORDERED_OBJS += \
 "./source/DSP2833x_SysCtrl.obj" \
 "./source/DSP2833x_usDelay.obj" \
 "./source/main.obj" \
+"../28335_RAM_lnk.cmd" \
 "../DSP2833x_Headers_nonBIOS.cmd" \
-"../F28335.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 
