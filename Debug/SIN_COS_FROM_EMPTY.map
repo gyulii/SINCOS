@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v6.4.6                      
 ******************************************************************************
->> Linked Mon Jun 14 11:05:27 2021
+>> Linked Mon Jun 14 11:36:37 2021
 
 OUTPUT FILE NAME:   <SIN_COS_FROM_EMPTY.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 0033840e
+ENTRY POINT SYMBOL: "_c_int00"  address: 003384a9
 
 
 MEMORY CONFIGURATION
@@ -25,7 +25,7 @@ PAGE 0:
   FLASHE                00318000   00008000  00000000  00008000  RWIX
   FLASHD                00320000   00008000  00000004  00007ffc  RWIX
   FLASHC                00328000   00008000  00000000  00008000  RWIX
-  FLASHA                00338000   00007f80  000005b9  000079c7  RWIX
+  FLASHA                00338000   00007f80  000006ae  000078d2  RWIX
   CSM_RSVD              0033ff80   00000076  00000000  00000076  RWIX
   BEGIN                 0033fff6   00000002  00000002  00000000  RWIX
   CSM_PWL               0033fff8   00000008  00000000  00000008  RWIX
@@ -108,25 +108,29 @@ section   page    origin      length       input sections
 ramfuncs   0    00320000    00000004     RUN ADDR = 00008000
                   00320000    00000004     DSP2833x_usDelay.obj (ramfuncs)
 
-.text      0    00338000    0000049b     
+.text      0    00338000    00000590     
                   00338000    00000316     DSP2833x_DefaultIsr.obj (.text:retain)
                   00338316    000000f8     DSP2833x_SysCtrl.obj (.text)
-                  0033840e    00000046     rts2800_fpu32.lib : boot.obj (.text)
-                  00338454    00000019                       : args_main.obj (.text)
-                  0033846d    00000019                       : exit.obj (.text)
-                  00338486    00000009                       : _lock.obj (.text)
-                  0033848f    00000008     DSP2833x_CodeStartBranch.obj (.text)
-                  00338497    00000004     main.obj (.text)
+                  0033840e    00000050     main.obj (.text)
+                  0033845e    0000004b     main.obj (.text:retain)
+                  003384a9    00000046     rts2800_fpu32.lib : boot.obj (.text)
+                  003384ef    00000028     DSP2833x_PieCtrl.obj (.text)
+                  00338517    00000022     DSP2833x_PieVect.obj (.text)
+                  00338539    00000019     rts2800_fpu32.lib : args_main.obj (.text)
+                  00338552    00000019                       : exit.obj (.text)
+                  0033856b    00000014     DSP2833x_Adc.obj (.text)
+                  0033857f    00000009     rts2800_fpu32.lib : _lock.obj (.text)
+                  00338588    00000008     DSP2833x_CodeStartBranch.obj (.text)
 
-.econst    0    0033849c    00000100     
-                  0033849c    00000100     DSP2833x_PieVect.obj (.econst)
+.econst    0    00338590    00000100     
+                  00338590    00000100     DSP2833x_PieVect.obj (.econst)
 
-.cinit     0    0033859c    0000001e     
-                  0033859c    0000000a     rts2800_fpu32.lib : exit.obj (.cinit)
-                  003385a6    00000008     main.obj (.cinit)
-                  003385ae    00000005     rts2800_fpu32.lib : _lock.obj (.cinit:__lock)
-                  003385b3    00000005                       : _lock.obj (.cinit:__unlock)
-                  003385b8    00000002     --HOLE-- [fill = 0]
+.cinit     0    00338690    0000001e     
+                  00338690    0000000a     rts2800_fpu32.lib : exit.obj (.cinit)
+                  0033869a    00000008     main.obj (.cinit)
+                  003386a2    00000005     rts2800_fpu32.lib : _lock.obj (.cinit:__lock)
+                  003386a7    00000005                       : _lock.obj (.cinit:__unlock)
+                  003386ac    00000002     --HOLE-- [fill = 0]
 
 codestart 
 *          0    0033fff6    00000002     
@@ -446,9 +450,9 @@ address     data page           name
 
 0000c000     300 (0000c000)     _min_value_last
 0000c001     300 (0000c000)     _min_value_actual
-0000c002     300 (0000c000)     _min_value_result
-0000c003     300 (0000c000)     _LoopCount
-0000c004     300 (0000c000)     _ConversionCount
+0000c002     300 (0000c000)     _LoopCount
+0000c003     300 (0000c000)     _ConversionCount
+0000c004     300 (0000c000)     _min_value_result
 
 0000c040     301 (0000c040)     _Voltage1
 
@@ -459,7 +463,7 @@ address     data page           name
 0000cc20     330 (0000cc00)     __lock
 0000cc22     330 (0000cc00)     __unlock
 
-0033849c    ce12 (00338480)     _PieVectTableInit
+00338590    ce16 (00338580)     _PieVectTableInit
 
 0033fff8    cfff (0033ffc0)     _CsmPwl
 
@@ -471,12 +475,12 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                 
 ----  -------   ----                 
 0     00338000  .text                
-0     0033846d  C$$EXIT              
+0     00338552  C$$EXIT              
 0     003380e6  _ADCINT_ISR          
 0     00380080  _ADC_cal             
 1     00000b00  _AdcMirror           
 1     00007100  _AdcRegs             
-1     0000c004  _ConversionCount     
+1     0000c003  _ConversionCount     
 1     00000c00  _CpuTimer0Regs       
 1     00000c08  _CpuTimer1Regs       
 1     00000c10  _CpuTimer2Regs       
@@ -543,6 +547,7 @@ page  address   name
 0     003381c2  _EQEP2_INT_ISR       
 1     00006b00  _EQep1Regs           
 1     00006b40  _EQep2Regs           
+0     0033850e  _EnableInterrupts    
 1     00000a80  _FlashRegs           
 1     00006f80  _GpioCtrlRegs        
 1     00006fc0  _GpioDataRegs        
@@ -553,12 +558,15 @@ page  address   name
 0     0033803c  _ILLEGAL_ISR         
 0     00338000  _INT13_ISR           
 0     0033800a  _INT14_ISR           
+0     0033856b  _InitAdc             
 0     00338382  _InitPeripheralClocks
+0     003384ef  _InitPieCtrl         
+0     00338517  _InitPieVectTable    
 0     00338331  _InitPll             
 0     00338316  _InitSysCtrl         
 0     003382f8  _LUF_ISR             
 0     003382ee  _LVF_ISR             
-1     0000c003  _LoopCount           
+1     0000c002  _LoopCount           
 0     003381f4  _MRINTA_ISR          
 0     003381e0  _MRINTB_ISR          
 0     003381fe  _MXINTA_ISR          
@@ -570,7 +578,7 @@ page  address   name
 1     00380090  _PartIdRegs          
 1     00000ce0  _PieCtrlRegs         
 1     00000d00  _PieVectTable        
-0     0033849c  _PieVectTableInit    
+0     00338590  _PieVectTableInit    
 0     0033801e  _RTOSINT_ISR         
 0     00320004  _RamfuncsLoadEnd     
 abs   00000004  _RamfuncsLoadSize    
@@ -623,29 +631,30 @@ abs   00000300  __STACK_SIZE
 1     0000cc1e  ___TI_dtors_ptr      
 abs   ffffffff  ___binit__           
 abs   ffffffff  ___c_args__          
-0     0033859c  ___cinit__           
-0     0033849b  ___etext__           
+0     00338690  ___cinit__           
+0     00338590  ___etext__           
 abs   ffffffff  ___pinit__           
 0     00338000  ___text__            
-0     00338454  __args_main          
+0     00338539  __args_main          
 1     0000cc20  __lock               
-0     0033848e  __nop                
-0     0033848a  __register_lock      
-0     00338486  __register_unlock    
+0     00338587  __nop                
+0     00338583  __register_lock      
+0     0033857f  __register_unlock    
 1     00000400  __stack              
 1     0000cc22  __unlock             
-0     0033846d  _abort               
-0     0033840e  _c_int00             
-0     0033846f  _exit                
-0     00338497  _main                
+0     00338552  _abort               
+0     0033845e  _adc_isr             
+0     003384a9  _c_int00             
+0     00338554  _exit                
+0     0033840e  _main                
 1     0000c001  _min_value_actual    
 1     0000c000  _min_value_last      
-1     0000c002  _min_value_result    
+1     0000c004  _min_value_result    
 0     0033830c  _rsvd_ISR            
 abs   ffffffff  binit                
-0     0033859c  cinit                
+0     00338690  cinit                
 0     0033fff6  code_start           
-0     0033849b  etext                
+0     00338590  etext                
 abs   ffffffff  pinit                
 
 
@@ -744,20 +753,25 @@ page  address   name
 0     00338331  _InitPll             
 0     00338382  _InitPeripheralClocks
 0     003383dd  _CsmUnlock           
-0     0033840e  _c_int00             
-0     00338454  __args_main          
-0     0033846d  C$$EXIT              
-0     0033846d  _abort               
-0     0033846f  _exit                
-0     00338486  __register_unlock    
-0     0033848a  __register_lock      
-0     0033848e  __nop                
-0     00338497  _main                
-0     0033849b  ___etext__           
-0     0033849b  etext                
-0     0033849c  _PieVectTableInit    
-0     0033859c  ___cinit__           
-0     0033859c  cinit                
+0     0033840e  _main                
+0     0033845e  _adc_isr             
+0     003384a9  _c_int00             
+0     003384ef  _InitPieCtrl         
+0     0033850e  _EnableInterrupts    
+0     00338517  _InitPieVectTable    
+0     00338539  __args_main          
+0     00338552  C$$EXIT              
+0     00338552  _abort               
+0     00338554  _exit                
+0     0033856b  _InitAdc             
+0     0033857f  __register_unlock    
+0     00338583  __register_lock      
+0     00338587  __nop                
+0     00338590  _PieVectTableInit    
+0     00338590  ___etext__           
+0     00338590  etext                
+0     00338690  ___cinit__           
+0     00338690  cinit                
 0     0033fff6  code_start           
 0     00380080  _ADC_cal             
 1     00000400  __stack              
@@ -812,9 +826,9 @@ page  address   name
 1     00007900  _I2caRegs            
 1     0000c000  _min_value_last      
 1     0000c001  _min_value_actual    
-1     0000c002  _min_value_result    
-1     0000c003  _LoopCount           
-1     0000c004  _ConversionCount     
+1     0000c002  _LoopCount           
+1     0000c003  _ConversionCount     
+1     0000c004  _min_value_result    
 1     0000c040  _Voltage1            
 1     0000c640  _Voltage2            
 1     0000cc1c  ___TI_cleanup_ptr    
@@ -831,4 +845,4 @@ abs   ffffffff  ___pinit__
 abs   ffffffff  binit                
 abs   ffffffff  pinit                
 
-[177 symbols]
+[182 symbols]
