@@ -89,7 +89,7 @@ InitAdc(void)
     // CPU_RATE define statement in the DSP2833x_Examples.h file must
     // contain the correct CPU clock period in nanoseconds.
     //
-    AdcRegs.ADCTRL3.all = 0x00E0;  // Power up bandgap/reference/ADC circuits
+   AdcRegs.ADCTRL3.all = 0x00E0;  // Power up bandgap/reference/ADC circuits
     DELAY_US(ADC_usDELAY);         // Delay before converting ADC channels
 }
 
