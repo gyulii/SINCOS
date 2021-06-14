@@ -6,22 +6,15 @@
 
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
 
+#include "main.h"
 
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
 
-//
-// Globals
-//
-Uint16 LoopCount;
-Uint16 ConversionCount;
-Uint16 Voltage1[1500];
-Uint16 Voltage2[1500];
-
 
 #if 0
-
+/* Flashbol futashoz */
 extern Uint16 RamfuncsLoadStart;
 extern Uint16 RamfuncsLoadEnd;
 extern Uint16 RamfuncsRunStart;
@@ -30,33 +23,29 @@ extern Uint16 RamfuncsRunStart;
 
 
 
-int16 min_value_actual = 2000;
-int16 min_value_last = 2000;
-int16 min_value_result;
-
-
 int main(void)
 {
     InitSysCtrl();
 
+
+    /*CPU freki beallitas*/
+
     EALLOW;
-    #if (CPU_FRQ_150MHZ)     // Default - 150 MHz SYSCLKOUT
-        //
-        // HSPCLK = SYSCLKOUT/2*ADC_MODCLK2 = 150/(2*3)   = 25.0 MHz
-        //
-        #define ADC_MODCLK 0x3
-    #endif
-    #if (CPU_FRQ_100MHZ)
-        //
-        // HSPCLK = SYSCLKOUT/2*ADC_MODCLK2 = 100/(2*2)   = 25.0 MHz
-        //
-        #define ADC_MODCLK 0x2
-    #endif
+#if (CPU_FRQ_150MHZ)     // Default - 150 MHz SYSCLKOUT
+    //
+    // HSPCLK = SYSCLKOUT/2*ADC_MODCLK2 = 150/(2*3)   = 25.0 MHz
+    //
+#define ADC_MODCLK 0x3
+#endif
+#if (CPU_FRQ_100MHZ)
+    //
+    // HSPCLK = SYSCLKOUT/2*ADC_MODCLK2 = 100/(2*2)   = 25.0 MHz
+    //
+#define ADC_MODCLK 0x2
+#endif
     EDIS;
-    //
-    // Define ADCCLK clock frequency ( less than or equal to 25 MHz )
-    // Assuming InitSysCtrl() has set SYSCLKOUT to 150 MHz
-    //
+
+
     EALLOW;
     SysCtrlRegs.HISPCP.all = ADC_MODCLK;
     EDIS;
@@ -98,20 +87,21 @@ int main(void)
     //
     InitPieVectTable();
 
-
 #if 0
     /* FLASHBOL FUTÁSHOZ */
-        MemCopy(&RamfuncsLoadStart, &RamfuncsLoadEnd, &RamfuncsRunStart);
-        InitFlash();
+    MemCopy(&RamfuncsLoadStart, &RamfuncsLoadEnd, &RamfuncsRunStart);
+    InitFlash();
 #endif
 
     //
     // Interrupts that are used in this example are re-mapped to
     // ISR functions found within this file.
     //
-    EALLOW;  // This is needed to write to EALLOW protected register
+    EALLOW;
+    // This is needed to write to EALLOW protected register
     PieVectTable.ADCINT = &adc_isr;
-    EDIS;    // This is needed to disable write to EALLOW protected registers
+    EDIS;
+    // This is needed to disable write to EALLOW protected registers
 
     //
     // Step 4. Initialize all the Device Peripherals:
@@ -121,84 +111,48 @@ int main(void)
     InitAdc();  // For this example, init the ADC
 
     // Step 5. User specific code, enable interrupts:
-     //
+    //
 
-     //
-     // Enable ADCINT in PIE
-     //
-     PieCtrlRegs.PIEIER1.bit.INTx6 = 1;
-     IER |= M_INT1;      // Enable CPU Interrupt 1
-     EINT;               // Enable Global interrupt INTM
-     ERTM;               // Enable Global realtime interrupt DBGM
+    //
+    // Enable ADCINT in PIE
+    //
+    PieCtrlRegs.PIEIER1.bit.INTx6 = 1;
+    IER |= M_INT1;      // Enable CPU Interrupt 1
+    EINT;
+    // Enable Global interrupt INTM
+    ERTM;
+    // Enable Global realtime interrupt DBGM
 
-     LoopCount = 0;
-     ConversionCount = 0;
+    LoopCount = 0;
+    ConversionCount = 0;
 
-     //
-     // Configure ADC
+    /*Adc konfiguracio*/
 
-
-     //
-
-     AdcRegs.ADCTRL3.bit.SMODE_SEL = 0x1;
+    adc_config();
 
 
-     AdcRegs.ADCMAXCONV.all = 0x0001;       // Setup 2 conv's on SEQ1
-     AdcRegs.ADCCHSELSEQ1.bit.CONV00 = 0x6; // Setup ADCINA3 as 1st SEQ1 conv.
+    /*EPWM konfiguracio*/
 
-     //
-     // Enable SOCA from ePWM to start SEQ1
-     //
-     //
-     AdcRegs.ADCTRL2.bit.EPWM_SOCA_SEQ1 = 1;
-
-     AdcRegs.ADCTRL2.bit.INT_ENA_SEQ1 = 1;  // Enable SEQ1 interrupt (every EOS)
-
-     //
-     //
-     // Assumes ePWM1 clock is already enabled in InitSysCtrl();
-     //
-     EPwm1Regs.ETSEL.bit.SOCAEN = 1;     // Enable SOC on A group
-     EPwm1Regs.ETSEL.bit.SOCASEL = 4;    // Select SOC from from CPMA on upcount
-     EPwm1Regs.ETPS.bit.SOCAPRD = 1;     // Generate pulse on 1st event
-     EPwm1Regs.CMPA.half.CMPA = 0x0080;  // Set compare A value
-     EPwm1Regs.TBPRD = 0xFFFF;           // Set period for ePWM1
-     EPwm1Regs.TBCTL.bit.CTRMODE = 0;    // count up and start
-
-     //
-     // Wait for ADC interrupt
-     //
+    epwm_config();
 
 
-     for(;;)
-     {
-         LoopCount++;
-     }
+    // Wait for ADC interrupt
 
+    for (;;)
+    {
+        LoopCount++;
+    }
 
 }
-
-
-
 
 __interrupt void
 adc_isr(void)
 {
-    /*       MIN megtalalas        */
-
-     min_value_actual = (AdcRegs.ADCRESULT0 >> 4) -1535;
-     if(min_value_actual < min_value_result) min_value_result = min_value_actual;
-     min_value_last = min_value_actual;
-
-
-    /* MIN megtalals                */
+    find_adc_min_value();
 
     Voltage1[ConversionCount] = (AdcRegs.ADCRESULT0 >> 4) - 1535;
     Voltage2[ConversionCount] = (AdcRegs.ADCRESULT1 >> 4) -1535;
 
-    //
-    // If 40 conversions have been logged, start over
-    //
     if(ConversionCount == 1500)
     {
         ConversionCount = 0;
@@ -208,18 +162,9 @@ adc_isr(void)
         ConversionCount++;
     }
 
-    //
-    // Reinitialize for next ADC sequence
-    //
-    AdcRegs.ADCTRL2.bit.RST_SEQ1 = 1;         // Reset SEQ1
-    AdcRegs.ADCST.bit.INT_SEQ1_CLR = 1;       // Clear INT SEQ1 bit
-
-    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;   // Acknowledge interrupt to PIE
-
+    adc_reinit_for_next_measurment();
+    
     return;
 }
-//
-// End of File
-//
 
 

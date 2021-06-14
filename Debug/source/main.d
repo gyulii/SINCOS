@@ -27,6 +27,7 @@ source/main.obj: D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_EPwm_define
 source/main.obj: D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_Dma_defines.h
 source/main.obj: D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_I2c_defines.h
 source/main.obj: D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_DefaultIsr.h
+source/main.obj: ../source/main.h
 
 ../source/main.c: 
 D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP28x_Project.h: 
@@ -55,3 +56,4 @@ D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_EPwm_defines.h:
 D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_Dma_defines.h: 
 D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_I2c_defines.h: 
 D:/ti/Workspace/SIN_COS_FROM_EMPTY/include/DSP2833x_DefaultIsr.h: 
+../source/main.h: 
