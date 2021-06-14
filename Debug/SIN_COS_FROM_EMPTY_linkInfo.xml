@@ -2,7 +2,7 @@
 <link_info>
    <banner>TMS320C2000 Linker PC v6.4.6</banner>
    <copyright>Copyright (c) 1996-2015 Texas Instruments Incorporated</copyright>
-   <link_time>0x60c74dd3</link_time>
+   <link_time>0x60c76ae6</link_time>
    <link_errors>0x0</link_errors>
    <output_file>SIN_COS_FROM_EMPTY.out</output_file>
    <entry_point>
@@ -798,34 +798,34 @@
          <name>.debug_line</name>
          <load_address>0xb08</load_address>
          <run_address>0xb08</run_address>
-         <size>0x11d</size>
+         <size>0x119</size>
          <input_file_ref idref="fl-b"/>
       </object_component>
       <object_component id="oc-b7">
          <name>.debug_line</name>
-         <load_address>0xc25</load_address>
-         <run_address>0xc25</run_address>
+         <load_address>0xc21</load_address>
+         <run_address>0xc21</run_address>
          <size>0x74</size>
          <input_file_ref idref="fl-16"/>
       </object_component>
       <object_component id="oc-be">
          <name>.debug_line</name>
-         <load_address>0xc99</load_address>
-         <run_address>0xc99</run_address>
+         <load_address>0xc95</load_address>
+         <run_address>0xc95</run_address>
          <size>0x65</size>
          <input_file_ref idref="fl-17"/>
       </object_component>
       <object_component id="oc-c3">
          <name>.debug_line</name>
-         <load_address>0xcfe</load_address>
-         <run_address>0xcfe</run_address>
+         <load_address>0xcfa</load_address>
+         <run_address>0xcfa</run_address>
          <size>0x5e</size>
          <input_file_ref idref="fl-18"/>
       </object_component>
       <object_component id="oc-c8">
          <name>.debug_line</name>
-         <load_address>0xd5c</load_address>
-         <run_address>0xd5c</run_address>
+         <load_address>0xd58</load_address>
+         <run_address>0xd58</run_address>
          <size>0x59</size>
          <input_file_ref idref="fl-19"/>
       </object_component>
@@ -1717,7 +1717,7 @@
          <name>.debug_line</name>
          <load_address>0x0</load_address>
          <run_address>0x0</run_address>
-         <size>0xdb5</size>
+         <size>0xdb1</size>
          <contents>
             <object_component_ref idref="oc-4f"/>
             <object_component_ref idref="oc-54"/>

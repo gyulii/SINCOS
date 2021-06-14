@@ -59,6 +59,6 @@ void epwm_config()
     EPwm1Regs.ETSEL.bit.SOCASEL = 4; // Select SOC from from CPMA on upcount
     EPwm1Regs.ETPS.bit.SOCAPRD = 1; // Generate pulse on 1st event
     EPwm1Regs.CMPA.half.CMPA = 0x0080; // Set compare A value
-    EPwm1Regs.TBPRD = 0xFFFF; // Set period for ePWM1
+    EPwm1Regs.TBPRD = 0x0FFF; // Set period for ePWM1
     EPwm1Regs.TBCTL.bit.CTRMODE = 0; // count up and start
 }

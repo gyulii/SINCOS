@@ -116,6 +116,7 @@ int main(void)
 
     epwm_config();
 
+    /* TO DO -> SAMPLING freki kalibralasa*/
 
     // Wait for ADC interrupt
 
