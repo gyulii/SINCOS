@@ -84,3 +84,25 @@ void QepGpioInit(void)
     EDIS;
 }
 
+void QepInit(void)
+{
+
+    EQep1Regs.QUPRD=1500000;    //clk
+
+    EQep1Regs.QDECCTL.bit.QSRC=00;    //quadrature mode
+
+    EQep1Regs.QEPCTL.bit.FREE_SOFT=2; // emulation kikapcs
+
+    EQep1Regs.QEPCTL.bit.PCRM=00; // Reset on COMP R
+
+    EQep1Regs.QEPCTL.bit.UTE=1;
+    EQep1Regs.QEPCTL.bit.QCLM=1;
+    EQep1Regs.QPOSMAX=0xffffffff;
+    EQep1Regs.QEPCTL.bit.QPEN=1;
+
+    EQep1Regs.QCAPCTL.bit.UPPS=5;       // 1/32 alacsony sebeseghez jo lehet
+    EQep1Regs.QCAPCTL.bit.CCPS=7;       // SYS/ 2exp7
+    EQep1Regs.QCAPCTL.bit.CEN=1;
+
+}
+
