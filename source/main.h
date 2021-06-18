@@ -62,3 +62,25 @@ void epwm_config()
     EPwm1Regs.TBPRD = 0x0FFF; // Set period for ePWM1
     EPwm1Regs.TBCTL.bit.CTRMODE = 0; // count up and start
 }
+
+
+void QepGpioInit(void)
+{
+   EALLOW;
+
+
+    GpioCtrlRegs.GPAPUD.bit.GPIO24 = 0;
+    GpioCtrlRegs.GPAPUD.bit.GPIO25 = 0;
+    GpioCtrlRegs.GPAPUD.bit.GPIO26 = 0;
+
+    GpioCtrlRegs.GPAQSEL2.bit.GPIO24 = 0;
+    GpioCtrlRegs.GPAQSEL2.bit.GPIO25 = 0;
+    GpioCtrlRegs.GPAQSEL2.bit.GPIO26 = 0;
+
+    GpioCtrlRegs.GPAMUX2.bit.GPIO24 = 1;
+    GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 1;
+    GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 1;
+
+    EDIS;
+}
+
