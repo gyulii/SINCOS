@@ -68,15 +68,15 @@ void QepGpioInit(void)
 {
    EALLOW;
 
-
+   /* Pull up*/
     GpioCtrlRegs.GPAPUD.bit.GPIO24 = 0;
     GpioCtrlRegs.GPAPUD.bit.GPIO25 = 0;
     GpioCtrlRegs.GPAPUD.bit.GPIO26 = 0;
-
+    /* Clk */
     GpioCtrlRegs.GPAQSEL2.bit.GPIO24 = 0;
     GpioCtrlRegs.GPAQSEL2.bit.GPIO25 = 0;
     GpioCtrlRegs.GPAQSEL2.bit.GPIO26 = 0;
-
+    /*  Funkcio */
     GpioCtrlRegs.GPAMUX2.bit.GPIO24 = 1;
     GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 1;
     GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 1;
