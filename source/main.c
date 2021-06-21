@@ -166,6 +166,7 @@ adc_isr(void)
 
 #endif
 //Test
+//Andras szerint
 
     adc_reinit_for_next_measurment();
     
