@@ -4,6 +4,8 @@
  * main.c
  */
 
+//#define NDEBUG
+
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
 
 #include "main.h"
@@ -129,18 +131,26 @@ int main(void)
 
     for (;;)
     {
+#ifndef NDEBUG
         LoopCount++;
     }
-
+#endif
 }
 
 __interrupt void
 adc_isr(void)
 {
+
+
+    g_qepCounter = QepReadCounter();
+
+#ifndef NDEBUG
+
     find_adc_min_value();
 
-    Voltage1[ConversionCount] = (AdcRegs.ADCRESULT0 >> 4) - 1535;
-    Voltage2[ConversionCount] = (AdcRegs.ADCRESULT1 >> 4) -1535;
+
+    Voltage1[ConversionCount] = readAdcValue_Channel_1(-1535);
+    Voltage2[ConversionCount] = readAdcValue_Channel_2(-1535);
 
     atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
 
@@ -152,6 +162,10 @@ adc_isr(void)
     {
         ConversionCount++;
     }
+
+
+#endif
+
 
     adc_reinit_for_next_measurment();
     

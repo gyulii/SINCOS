@@ -2,14 +2,18 @@
 //
 // VÁLTOZÓ DEFINIÁLÁS
 
-Uint16 LoopCount;
-Uint16 ConversionCount;
-Uint16 Voltage1[1500];
-Uint16 Voltage2[1500];
+Uint16 volatile LoopCount;
+Uint16 volatile ConversionCount;
+Uint16 volatile Voltage1[1500];
+Uint16 volatile Voltage2[1500];
 
-int16 min_value_actual = 2000;
-int16 min_value_last = 2000;
-int16 min_value_result;
+int16 volatile min_value_actual = 2000;
+int16 volatile min_value_last = 2000;
+int16 volatile min_value_result;
+
+/* QEP Globals */
+
+int32 volatile g_qepCounter;
 
 
 
@@ -31,6 +35,16 @@ void adc_reinit_for_next_measurment()
     AdcRegs.ADCTRL2.bit.RST_SEQ1 = 1; // Reset SEQ1
     AdcRegs.ADCST.bit.INT_SEQ1_CLR = 1; // Clear INT SEQ1 bit
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+}
+
+int readAdcValue_Channel_1 (int offset)
+{
+    return ((AdcRegs.ADCRESULT0 >> 4) + offset);
+}
+
+int readAdcValue_Channel_2 (int offset)
+{
+   return ((AdcRegs.ADCRESULT1 >> 4) + offset);
 }
 
 void adc_config()
@@ -112,7 +126,7 @@ int QepReadDir(void)
     return EQep2Regs.QEPSTS.bit.QDF;
 }
 
-int QepReadTimer(void)
+int QepReadCounter(void)
 {
     return EQep2Regs.QPOSCNT;
 }
