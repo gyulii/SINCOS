@@ -12,10 +12,14 @@
 
 //Arctan fuggvenyhez kell
 #include <math.h>
+#define PI 3.1415926535
 
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
+
+
+double Angle;
 
 
 #if 0
@@ -142,7 +146,7 @@ adc_isr(void)
 {
 
 
-   // g_qepCounter = QepReadCounter();
+    g_qepCounter = QepReadCounter();
 
 #ifndef NDEBUG
 
@@ -153,6 +157,9 @@ adc_isr(void)
     Voltage2[ConversionCount] = readAdcValue_Channel_2(-1535);
 
     atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
+    Angle = (atan2((AdcRegs.ADCRESULT0 >> 4),(AdcRegs.ADCRESULT1 >> 4))*180)/PI;
+
+
 
     if(ConversionCount == 1500)
     {
@@ -164,9 +171,7 @@ adc_isr(void)
     }
 
 
-
 #endif
-//Test
 
 
 
