@@ -12,10 +12,14 @@
 
 //Arctan fuggvenyhez kell
 #include <math.h>
+#define PI 3.1415926535
 
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
+
+
+double Angle;
 
 
 #if 0
@@ -90,7 +94,7 @@ int main(void)
     InitPieVectTable();
 
 #if 0
-    /* FLASHBOL FUTÁSHOZ */
+    /* FLASHBOL FUTASHOZ */
     MemCopy(&RamfuncsLoadStart, &RamfuncsLoadEnd, &RamfuncsRunStart);
     InitFlash();
 #endif
@@ -153,6 +157,9 @@ adc_isr(void)
     Voltage2[ConversionCount] = readAdcValue_Channel_2(-1535);
 
     atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
+    Angle = (atan2((AdcRegs.ADCRESULT0 >> 4),(AdcRegs.ADCRESULT1 >> 4))*180)/PI;
+
+
 
     if(ConversionCount == 1500)
     {
@@ -165,11 +172,7 @@ adc_isr(void)
 
 
 #endif
-//Test
 
-//Andras szerint
-
-//Gyula szerint
 
 
     adc_reinit_for_next_measurment();
