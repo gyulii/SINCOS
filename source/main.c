@@ -90,7 +90,7 @@ int main(void)
     InitPieVectTable();
 
 #if 0
-    /* FLASHBOL FUT¡SHOZ */
+    /* FLASHBOL FUT√ÅSHOZ */
     MemCopy(&RamfuncsLoadStart, &RamfuncsLoadEnd, &RamfuncsRunStart);
     InitFlash();
 #endif
@@ -166,7 +166,11 @@ adc_isr(void)
 
 #endif
 //Test
+
+//Andras szerint
+
 //Gyula szerint
+
 
     adc_reinit_for_next_measurment();
     
