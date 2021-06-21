@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := C:/ti/ccs/tools/compiler/ti-cgt-c2000_20.2.2.LTS
+CG_TOOL_ROOT := D:/ti/ccs/tools/compiler/ti-cgt-c2000_6.4.6
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -152,14 +152,14 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 SIN_COS_FROM_EMPTY.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
-	"C:/ti/ccs/tools/compiler/ti-cgt-c2000_20.2.2.LTS/bin/cl2000" -v28 -ml -mt --float_support=fpu32 -g --diag_wrap=off --diag_warning=225 --display_error_number -z -m"SIN_COS_FROM_EMPTY.map" --stack_size=0x300 --warn_sections -i"C:/ti/ccs/tools/compiler/ti-cgt-c2000_20.2.2.LTS/lib" -i"C:/ti/ccs/tools/compiler/ti-cgt-c2000_20.2.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="SIN_COS_FROM_EMPTY_linkInfo.xml" --rom_model -o "SIN_COS_FROM_EMPTY.out" $(ORDERED_OBJS)
+	"D:/ti/ccs/tools/compiler/ti-cgt-c2000_6.4.6/bin/cl2000" -v28 -ml -mt --float_support=fpu32 -g --diag_wrap=off --diag_warning=225 --display_error_number -z -m"SIN_COS_FROM_EMPTY.map" --stack_size=0x300 --warn_sections -i"D:/ti/ccs/tools/compiler/ti-cgt-c2000_6.4.6/lib" -i"D:/ti/ccs/tools/compiler/ti-cgt-c2000_6.4.6/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="SIN_COS_FROM_EMPTY_linkInfo.xml" --rom_model -o "SIN_COS_FROM_EMPTY.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 SIN_COS_FROM_EMPTY.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: C2000 Hex Utility'
-	"C:/ti/ccs/tools/compiler/ti-cgt-c2000_20.2.2.LTS/bin/hex2000" --diag_wrap=off -o "SIN_COS_FROM_EMPTY.hex" $(EXE_OUTPUTS__QUOTED)
+	"D:/ti/ccs/tools/compiler/ti-cgt-c2000_6.4.6/bin/hex2000" --diag_wrap=off -o "SIN_COS_FROM_EMPTY.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 

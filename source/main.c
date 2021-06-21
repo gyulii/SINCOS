@@ -90,7 +90,7 @@ int main(void)
     InitPieVectTable();
 
 #if 0
-    /* FLASHBOL FUTÁSHOZ */
+    /* FLASHBOL FUTASHOZ */
     MemCopy(&RamfuncsLoadStart, &RamfuncsLoadEnd, &RamfuncsRunStart);
     InitFlash();
 #endif
@@ -142,7 +142,7 @@ adc_isr(void)
 {
 
 
-    g_qepCounter = QepReadCounter();
+   // g_qepCounter = QepReadCounter();
 
 #ifndef NDEBUG
 
@@ -164,12 +164,10 @@ adc_isr(void)
     }
 
 
+
 #endif
 //Test
 
-//Andras szerint
-
-//Gyula szerint
 
 
     adc_reinit_for_next_measurment();

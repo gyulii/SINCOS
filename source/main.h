@@ -70,10 +70,10 @@ void epwm_config()
     // Assumes ePWM1 clock is already enabled in InitSysCtrl();
     //
     EPwm1Regs.ETSEL.bit.SOCAEN = 1; // Enable SOC on A group
-    EPwm1Regs.ETSEL.bit.SOCASEL = 4; // Select SOC from from CPMA on upcount
+    EPwm1Regs.ETSEL.bit.SOCASEL = 2; // Enable event time-base counter equal to period
     EPwm1Regs.ETPS.bit.SOCAPRD = 1; // Generate pulse on 1st event
-    EPwm1Regs.CMPA.half.CMPA = 0x0080; // Set compare A value
-    EPwm1Regs.TBPRD = 0x0FFF; // Set period for ePWM1
+    //EPwm1Regs.CMPA.half.CMPA = 0x0080; // Set compare A value
+    EPwm1Regs.TBPRD = 1500; // Set period for ePWM1 -> kHz Sample
     EPwm1Regs.TBCTL.bit.CTRMODE = 0; // count up and start
 }
 
