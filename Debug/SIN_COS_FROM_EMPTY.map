@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v6.4.6                      
 ******************************************************************************
->> Linked Mon Jun 21 08:04:02 2021
+>> Linked Mon Jun 21 09:19:15 2021
 
 OUTPUT FILE NAME:   <SIN_COS_FROM_EMPTY.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 0000951b
+ENTRY POINT SYMBOL: "_c_int00"  address: 00009530
 
 
 MEMORY CONFIGURATION
@@ -15,7 +15,7 @@ PAGE 0:
   BEGIN                 00000000   00000002  00000002  00000000  RWIX
   RAMM0                 00000050   000003b0  00000000  000003b0  RWIX
   RAML0                 00008000   00001000  00000022  00000fde  RWIX
-  RAML1                 00009000   00001000  00000602  000009fe  RWIX
+  RAML1                 00009000   00001000  00000617  000009e9  RWIX
   RAML2                 0000a000   00001000  00000000  00001000  RWIX
   RAML3                 0000b000   00001000  00000000  00001000  RWIX
   ZONE7A                00200000   0000fc00  00000000  0000fc00  RWIX
@@ -109,19 +109,19 @@ ramfuncs   0    0000801e    00000004
 
 .pinit     0    00008000    00000000     UNINITIALIZED
 
-.text      0    00009000    00000602     
+.text      0    00009000    00000617     
                   00009000    00000316     DSP2833x_DefaultIsr.obj (.text:retain)
                   00009316    000000f8     DSP2833x_SysCtrl.obj (.text)
-                  0000940e    000000c0     main.obj (.text)
-                  000094ce    0000004d     main.obj (.text:retain)
-                  0000951b    00000046     rts2800_fpu32.lib : boot.obj (.text)
-                  00009561    00000028     DSP2833x_PieCtrl.obj (.text)
-                  00009589    00000022     DSP2833x_PieVect.obj (.text)
-                  000095ab    00000019     rts2800_fpu32.lib : args_main.obj (.text)
-                  000095c4    00000019                       : exit.obj (.text)
-                  000095dd    00000014     DSP2833x_Adc.obj (.text)
-                  000095f1    00000009     rts2800_fpu32.lib : _lock.obj (.text)
-                  000095fa    00000008     DSP2833x_CodeStartBranch.obj (.text)
+                  0000940e    000000d2     main.obj (.text)
+                  000094e0    00000050     main.obj (.text:retain)
+                  00009530    00000046     rts2800_fpu32.lib : boot.obj (.text)
+                  00009576    00000028     DSP2833x_PieCtrl.obj (.text)
+                  0000959e    00000022     DSP2833x_PieVect.obj (.text)
+                  000095c0    00000019     rts2800_fpu32.lib : args_main.obj (.text)
+                  000095d9    00000019                       : exit.obj (.text)
+                  000095f2    00000014     DSP2833x_Adc.obj (.text)
+                  00009606    00000009     rts2800_fpu32.lib : _lock.obj (.text)
+                  0000960f    00000008     DSP2833x_CodeStartBranch.obj (.text)
 
 .adc_cal   0    00380080    00000007     NOLOAD SECTION
                   00380080    00000007     DSP2833x_ADC_cal.obj (.adc_cal)
@@ -439,11 +439,12 @@ address     data page           name
 
 00007900     1e4 (00007900)     _I2caRegs
 
-0000c000     300 (0000c000)     _LoopCount
-0000c001     300 (0000c000)     _ConversionCount
-0000c002     300 (0000c000)     _min_value_last
-0000c003     300 (0000c000)     _min_value_actual
-0000c004     300 (0000c000)     _min_value_result
+0000c000     300 (0000c000)     _min_value_result
+0000c001     300 (0000c000)     _LoopCount
+0000c002     300 (0000c000)     _min_value_actual
+0000c003     300 (0000c000)     _ConversionCount
+0000c004     300 (0000c000)     _min_value_last
+0000c006     300 (0000c000)     _g_qepCounter
 
 0000c040     301 (0000c040)     _Voltage1
 
@@ -466,12 +467,12 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                           
 ----  -------   ----                           
 abs   ffffffff  .text                          
-0     000095c4  C$$EXIT                        
+0     000095d9  C$$EXIT                        
 0     000090e6  _ADCINT_ISR                    
 0     00380080  _ADC_cal                       
 1     00000b00  _AdcMirror                     
 1     00007100  _AdcRegs                       
-1     0000c001  _ConversionCount               
+1     0000c003  _ConversionCount               
 1     00000c00  _CpuTimer0Regs                 
 1     00000c08  _CpuTimer1Regs                 
 1     00000c10  _CpuTimer2Regs                 
@@ -538,7 +539,7 @@ abs   ffffffff  .text
 0     000091c2  _EQEP2_INT_ISR                 
 1     00006b00  _EQep1Regs                     
 1     00006b40  _EQep2Regs                     
-0     00009580  _EnableInterrupts              
+0     00009595  _EnableInterrupts              
 1     00000a80  _FlashRegs                     
 1     00006f80  _GpioCtrlRegs                  
 1     00006fc0  _GpioDataRegs                  
@@ -549,15 +550,15 @@ abs   ffffffff  .text
 0     0000903c  _ILLEGAL_ISR                   
 0     00009000  _INT13_ISR                     
 0     0000900a  _INT14_ISR                     
-0     000095dd  _InitAdc                       
+0     000095f2  _InitAdc                       
 0     00009382  _InitPeripheralClocks          
-0     00009561  _InitPieCtrl                   
-0     00009589  _InitPieVectTable              
+0     00009576  _InitPieCtrl                   
+0     0000959e  _InitPieVectTable              
 0     00009331  _InitPll                       
 0     00009316  _InitSysCtrl                   
 0     000092f8  _LUF_ISR                       
 0     000092ee  _LVF_ISR                       
-1     0000c000  _LoopCount                     
+1     0000c001  _LoopCount                     
 0     000091f4  _MRINTA_ISR                    
 0     000091e0  _MRINTB_ISR                    
 0     000091fe  _MXINTA_ISR                    
@@ -570,10 +571,10 @@ abs   ffffffff  .text
 1     00000ce0  _PieCtrlRegs                   
 1     00000d00  _PieVectTable                  
 1     0000d000  _PieVectTableInit              
-0     0000944f  _QepGpioInit                   
-0     0000946d  _QepInit                       
-0     0000948d  _QepReadDir                    
-0     00009493  _QepReadTimer                  
+0     00009461  _QepGpioInit                   
+0     0000947f  _QepInit                       
+0     000094a5  _QepReadCounter                
+0     0000949f  _QepReadDir                    
 0     0000901e  _RTOSINT_ISR                   
 0     0000926c  _SCIRXINTA_ISR                 
 0     00009280  _SCIRXINTB_ISR                 
@@ -626,25 +627,28 @@ abs   ffffffff  ___c_args__
 abs   ffffffff  ___etext__                     
 abs   ffffffff  ___pinit__                     
 abs   ffffffff  ___text__                      
-0     000095ab  __args_main                    
+0     000095c0  __args_main                    
 1     0000cc20  __lock                         
-0     000095f9  __nop                          
-0     000095f5  __register_lock                
-0     000095f1  __register_unlock              
+0     0000960e  __nop                          
+0     0000960a  __register_lock                
+0     00009606  __register_unlock              
 1     00000400  __stack                        
 1     0000cc22  __unlock                       
-0     000095c4  _abort                         
-0     0000942b  _adc_config                    
-0     000094ce  _adc_isr                       
+0     000095d9  _abort                         
+0     0000943d  _adc_config                    
+0     000094e0  _adc_isr                       
 0     00009420  _adc_reinit_for_next_measurment
-0     0000951b  _c_int00                       
-0     0000943a  _epwm_config                   
-0     000095c6  _exit                          
+0     00009530  _c_int00                       
+0     0000944c  _epwm_config                   
+0     000095db  _exit                          
 0     0000940e  _find_adc_min_value            
-0     00009497  _main                          
-1     0000c003  _min_value_actual              
-1     0000c002  _min_value_last                
-1     0000c004  _min_value_result              
+1     0000c006  _g_qepCounter                  
+0     000094a9  _main                          
+1     0000c002  _min_value_actual              
+1     0000c004  _min_value_last                
+1     0000c000  _min_value_result              
+0     0000942b  _readAdcValue_Channel_1        
+0     00009434  _readAdcValue_Channel_2        
 0     0000930c  _rsvd_ISR                      
 abs   ffffffff  binit                          
 0     00008000  cinit                          
@@ -748,26 +752,28 @@ page  address   name
 0     000093dd  _CsmUnlock                     
 0     0000940e  _find_adc_min_value            
 0     00009420  _adc_reinit_for_next_measurment
-0     0000942b  _adc_config                    
-0     0000943a  _epwm_config                   
-0     0000944f  _QepGpioInit                   
-0     0000946d  _QepInit                       
-0     0000948d  _QepReadDir                    
-0     00009493  _QepReadTimer                  
-0     00009497  _main                          
-0     000094ce  _adc_isr                       
-0     0000951b  _c_int00                       
-0     00009561  _InitPieCtrl                   
-0     00009580  _EnableInterrupts              
-0     00009589  _InitPieVectTable              
-0     000095ab  __args_main                    
-0     000095c4  C$$EXIT                        
-0     000095c4  _abort                         
-0     000095c6  _exit                          
-0     000095dd  _InitAdc                       
-0     000095f1  __register_unlock              
-0     000095f5  __register_lock                
-0     000095f9  __nop                          
+0     0000942b  _readAdcValue_Channel_1        
+0     00009434  _readAdcValue_Channel_2        
+0     0000943d  _adc_config                    
+0     0000944c  _epwm_config                   
+0     00009461  _QepGpioInit                   
+0     0000947f  _QepInit                       
+0     0000949f  _QepReadDir                    
+0     000094a5  _QepReadCounter                
+0     000094a9  _main                          
+0     000094e0  _adc_isr                       
+0     00009530  _c_int00                       
+0     00009576  _InitPieCtrl                   
+0     00009595  _EnableInterrupts              
+0     0000959e  _InitPieVectTable              
+0     000095c0  __args_main                    
+0     000095d9  C$$EXIT                        
+0     000095d9  _abort                         
+0     000095db  _exit                          
+0     000095f2  _InitAdc                       
+0     00009606  __register_unlock              
+0     0000960a  __register_lock                
+0     0000960e  __nop                          
 0     00380080  _ADC_cal                       
 1     00000400  __stack                        
 1     00000700  __STACK_END                    
@@ -819,11 +825,12 @@ page  address   name
 1     00007750  _ScibRegs                      
 1     00007770  _ScicRegs                      
 1     00007900  _I2caRegs                      
-1     0000c000  _LoopCount                     
-1     0000c001  _ConversionCount               
-1     0000c002  _min_value_last                
-1     0000c003  _min_value_actual              
-1     0000c004  _min_value_result              
+1     0000c000  _min_value_result              
+1     0000c001  _LoopCount                     
+1     0000c002  _min_value_actual              
+1     0000c003  _ConversionCount               
+1     0000c004  _min_value_last                
+1     0000c006  _g_qepCounter                  
 1     0000c040  _Voltage1                      
 1     0000c640  _Voltage2                      
 1     0000cc1c  ___TI_cleanup_ptr              
@@ -844,4 +851,4 @@ abs   ffffffff  binit
 abs   ffffffff  etext                          
 abs   ffffffff  pinit                          
 
-[186 symbols]
+[189 symbols]
