@@ -66,6 +66,7 @@ void epwm_config()
 
 void QepGpioInit(void)
 {
+
    EALLOW;
 
    /* Pull up*/
@@ -77,9 +78,9 @@ void QepGpioInit(void)
     GpioCtrlRegs.GPAQSEL2.bit.GPIO25 = 0;
     GpioCtrlRegs.GPAQSEL2.bit.GPIO26 = 0;
     /*  Funkcio */
-    GpioCtrlRegs.GPAMUX2.bit.GPIO24 = 1;
-    GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 1;
-    GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 1;
+    GpioCtrlRegs.GPAMUX2.bit.GPIO24 = 2;
+    GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 2;
+    GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 2;
 
     EDIS;
 }

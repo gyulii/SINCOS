@@ -118,7 +118,11 @@ int main(void)
 
     /* TO DO -> SAMPLING freki kalibralasa*/
 
-    // Wait for ADC interrupt
+    QepInit();
+    QepGpioInit();
+
+
+
 
     for (;;)
     {
