@@ -108,7 +108,7 @@ void QepInit(void)
 
     EQep2Regs.QEPCTL.bit.FREE_SOFT=2; // emulation kikapcs
 
-    EQep2Regs.QEPCTL.bit.PCRM=00; // Reset on COMP R
+    EQep2Regs.QEPCTL.bit.PCRM=0; // Reset on COMP R
 
     EQep2Regs.QEPCTL.bit.UTE=1;
     EQep2Regs.QEPCTL.bit.QCLM=1;

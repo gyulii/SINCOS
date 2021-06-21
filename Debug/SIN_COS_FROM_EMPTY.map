@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v6.4.6                      
 ******************************************************************************
->> Linked Mon Jun 21 10:08:55 2021
+>> Linked Mon Jun 21 11:52:19 2021
 
 OUTPUT FILE NAME:   <SIN_COS_FROM_EMPTY.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 0000968f
+ENTRY POINT SYMBOL: "_c_int00"  address: 000096b5
 
 
 MEMORY CONFIGURATION
@@ -15,7 +15,7 @@ PAGE 0:
   BEGIN                 00000000   00000002  00000002  00000000  RWIX
   RAMM0                 00000050   000003b0  00000000  000003b0  RWIX
   RAML0                 00008000   00001000  00000026  00000fda  RWIX
-  RAML1                 00009000   00001000  0000078c  00000874  RWIX
+  RAML1                 00009000   00001000  000007b2  0000084e  RWIX
   RAML2                 0000a000   00001000  00000000  00001000  RWIX
   RAML3                 0000b000   00001000  00000000  00001000  RWIX
   ZONE7A                00200000   0000fc00  00000000  0000fc00  RWIX
@@ -110,22 +110,22 @@ ramfuncs   0    00008022    00000004
 
 .pinit     0    00008000    00000000     UNINITIALIZED
 
-.text      0    00009000    0000078c     
+.text      0    00009000    000007b2     
                   00009000    00000316     DSP2833x_DefaultIsr.obj (.text:retain)
                   00009316    000000f8     DSP2833x_SysCtrl.obj (.text)
                   0000940e    000000d0     main.obj (.text)
                   000094de    000000c9     rts2800_fpu32.lib : atan2.obj (.text)
                   000095a7    00000088                       : fs_div.obj (.text)
-                  0000962f    00000060     main.obj (.text:retain)
-                  0000968f    00000046     rts2800_fpu32.lib : boot.obj (.text)
-                  000096d5    00000028     DSP2833x_PieCtrl.obj (.text)
-                  000096fd    00000022     DSP2833x_PieVect.obj (.text)
-                  0000971f    00000019     rts2800_fpu32.lib : args_main.obj (.text)
-                  00009738    00000019                       : exit.obj (.text)
-                  00009751    00000016                       : frexp.obj (.text)
-                  00009767    00000014     DSP2833x_Adc.obj (.text)
-                  0000977b    00000009     rts2800_fpu32.lib : _lock.obj (.text)
-                  00009784    00000008     DSP2833x_CodeStartBranch.obj (.text)
+                  0000962f    00000086     main.obj (.text:retain)
+                  000096b5    00000046     rts2800_fpu32.lib : boot.obj (.text)
+                  000096fb    00000028     DSP2833x_PieCtrl.obj (.text)
+                  00009723    00000022     DSP2833x_PieVect.obj (.text)
+                  00009745    00000019     rts2800_fpu32.lib : args_main.obj (.text)
+                  0000975e    00000019                       : exit.obj (.text)
+                  00009777    00000016                       : frexp.obj (.text)
+                  0000978d    00000014     DSP2833x_Adc.obj (.text)
+                  000097a1    00000009     rts2800_fpu32.lib : _lock.obj (.text)
+                  000097aa    00000008     DSP2833x_CodeStartBranch.obj (.text)
 
 .adc_cal   0    00380080    00000007     NOLOAD SECTION
                   00380080    00000007     DSP2833x_ADC_cal.obj (.adc_cal)
@@ -451,10 +451,11 @@ address     data page           name
 0000c003     300 (0000c000)     _ConversionCount
 0000c004     300 (0000c000)     _min_value_last
 0000c006     300 (0000c000)     _g_qepCounter
+0000c008     300 (0000c000)     _Angle
 
-0000c040     301 (0000c040)     _Voltage1
+0000c040     301 (0000c040)     _Voltage2
 
-0000c640     319 (0000c640)     _Voltage2
+0000c640     319 (0000c640)     _Voltage1
 
 0000cc1c     330 (0000cc00)     ___TI_cleanup_ptr
 0000cc1e     330 (0000cc00)     ___TI_dtors_ptr
@@ -474,12 +475,13 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                           
 ----  -------   ----                           
 abs   ffffffff  .text                          
-0     00009738  C$$EXIT                        
+0     0000975e  C$$EXIT                        
 0     000095a7  FS$$DIV                        
 0     000090e6  _ADCINT_ISR                    
 0     00380080  _ADC_cal                       
 1     00000b00  _AdcMirror                     
 1     00007100  _AdcRegs                       
+1     0000c008  _Angle                         
 1     0000c003  _ConversionCount               
 1     00000c00  _CpuTimer0Regs                 
 1     00000c08  _CpuTimer1Regs                 
@@ -547,7 +549,7 @@ abs   ffffffff  .text
 0     000091c2  _EQEP2_INT_ISR                 
 1     00006b00  _EQep1Regs                     
 1     00006b40  _EQep2Regs                     
-0     000096f4  _EnableInterrupts              
+0     0000971a  _EnableInterrupts              
 1     00000a80  _FlashRegs                     
 1     00006f80  _GpioCtrlRegs                  
 1     00006fc0  _GpioDataRegs                  
@@ -558,10 +560,10 @@ abs   ffffffff  .text
 0     0000903c  _ILLEGAL_ISR                   
 0     00009000  _INT13_ISR                     
 0     0000900a  _INT14_ISR                     
-0     00009767  _InitAdc                       
+0     0000978d  _InitAdc                       
 0     00009382  _InitPeripheralClocks          
-0     000096d5  _InitPieCtrl                   
-0     000096fd  _InitPieVectTable              
+0     000096fb  _InitPieCtrl                   
+0     00009723  _InitPieVectTable              
 0     00009331  _InitPll                       
 0     00009316  _InitSysCtrl                   
 0     000092f8  _LUF_ISR                       
@@ -613,8 +615,8 @@ abs   ffffffff  .text
 0     00009082  _USER7_ISR                     
 0     0000908c  _USER8_ISR                     
 0     00009096  _USER9_ISR                     
-1     0000c040  _Voltage1                      
-1     0000c640  _Voltage2                      
+1     0000c640  _Voltage1                      
+1     0000c040  _Voltage2                      
 0     000090fa  _WAKEINT_ISR                   
 0     000090d2  _XINT1_ISR                     
 0     000090dc  _XINT2_ISR                     
@@ -635,24 +637,24 @@ abs   ffffffff  ___c_args__
 abs   ffffffff  ___etext__                     
 abs   ffffffff  ___pinit__                     
 abs   ffffffff  ___text__                      
-0     0000971f  __args_main                    
+0     00009745  __args_main                    
 1     0000cc20  __lock                         
-0     00009783  __nop                          
-0     0000977f  __register_lock                
-0     0000977b  __register_unlock              
+0     000097a9  __nop                          
+0     000097a5  __register_lock                
+0     000097a1  __register_unlock              
 1     00000400  __stack                        
 1     0000cc22  __unlock                       
-0     00009738  _abort                         
+0     0000975e  _abort                         
 0     0000943d  _adc_config                    
 0     0000962f  _adc_isr                       
 0     00009420  _adc_reinit_for_next_measurment
 0     000094de  _atan2                         
-0     0000968f  _c_int00                       
+0     000096b5  _c_int00                       
 0     0000944c  _epwm_config                   
 1     0000cc24  _errno                         
-0     0000973a  _exit                          
+0     00009760  _exit                          
 0     0000940e  _find_adc_min_value            
-0     00009751  _frexp                         
+0     00009777  _frexp                         
 1     0000c006  _g_qepCounter                  
 0     000094a7  _main                          
 1     0000c002  _min_value_actual              
@@ -775,19 +777,19 @@ page  address   name
 0     000094de  _atan2                         
 0     000095a7  FS$$DIV                        
 0     0000962f  _adc_isr                       
-0     0000968f  _c_int00                       
-0     000096d5  _InitPieCtrl                   
-0     000096f4  _EnableInterrupts              
-0     000096fd  _InitPieVectTable              
-0     0000971f  __args_main                    
-0     00009738  C$$EXIT                        
-0     00009738  _abort                         
-0     0000973a  _exit                          
-0     00009751  _frexp                         
-0     00009767  _InitAdc                       
-0     0000977b  __register_unlock              
-0     0000977f  __register_lock                
-0     00009783  __nop                          
+0     000096b5  _c_int00                       
+0     000096fb  _InitPieCtrl                   
+0     0000971a  _EnableInterrupts              
+0     00009723  _InitPieVectTable              
+0     00009745  __args_main                    
+0     0000975e  C$$EXIT                        
+0     0000975e  _abort                         
+0     00009760  _exit                          
+0     00009777  _frexp                         
+0     0000978d  _InitAdc                       
+0     000097a1  __register_unlock              
+0     000097a5  __register_lock                
+0     000097a9  __nop                          
 0     00380080  _ADC_cal                       
 1     00000400  __stack                        
 1     00000700  __STACK_END                    
@@ -845,8 +847,9 @@ page  address   name
 1     0000c003  _ConversionCount               
 1     0000c004  _min_value_last                
 1     0000c006  _g_qepCounter                  
-1     0000c040  _Voltage1                      
-1     0000c640  _Voltage2                      
+1     0000c008  _Angle                         
+1     0000c040  _Voltage2                      
+1     0000c640  _Voltage1                      
 1     0000cc1c  ___TI_cleanup_ptr              
 1     0000cc1e  ___TI_dtors_ptr                
 1     0000cc20  __lock                         
@@ -866,4 +869,4 @@ abs   ffffffff  binit
 abs   ffffffff  etext                          
 abs   ffffffff  pinit                          
 
-[193 symbols]
+[194 symbols]
