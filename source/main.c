@@ -8,6 +8,9 @@
 
 #include "main.h"
 
+//Arctan fuggvenyhez kell
+#include <math.h>
+
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
@@ -138,6 +141,8 @@ adc_isr(void)
 
     Voltage1[ConversionCount] = (AdcRegs.ADCRESULT0 >> 4) - 1535;
     Voltage2[ConversionCount] = (AdcRegs.ADCRESULT1 >> 4) -1535;
+
+    atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
 
     if(ConversionCount == 1500)
     {
