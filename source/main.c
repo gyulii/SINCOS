@@ -5,6 +5,10 @@
  */
 
 //#define NDEBUG
+#define Rollback 0
+
+
+
 
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
 
@@ -21,8 +25,9 @@ double fordulatokszamaproba=0;
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
-
-
+#if Rollback
+__interrupt void Qep_timeout_isr(void);
+#endif
 
 #if 0
 /* Flashbol futashoz */
@@ -32,6 +37,11 @@ extern Uint16 RamfuncsRunStart;
 
 #endif
 
+#ifndef NDEBUG
+
+int temp_szamlalo = 0;
+
+#endif
 
 
 int main(void)
@@ -104,6 +114,9 @@ int main(void)
 
     EALLOW; // This is needed to write to EALLOW protected register
     PieVectTable.ADCINT = &adc_isr;
+#if Rollback
+    PieVectTable.EQEP2_INT = &Qep_timeout_isr;
+#endif
     EDIS;   // This is needed to disable write to EALLOW protected registers
 
 
@@ -150,8 +163,9 @@ adc_isr(void)
 
 
     g_qepCounter = QepReadCounter();
+#if Rollback
     fordulatokszamaproba=g_qepCounter/4096;
-
+#endif
 
 
 #ifndef NDEBUG
@@ -162,13 +176,14 @@ adc_isr(void)
     Voltage1[ConversionCount] = readAdcValue_Channel_1(AdcOffset);
     Voltage2[ConversionCount] = readAdcValue_Channel_2(AdcOffset);
 
+#if Rollback
     //arctan hasznalatanak modja
     atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
 
     //szog meghatarozasa
     Angle = (atan2((AdcRegs.ADCRESULT0 >> 4),(AdcRegs.ADCRESULT1 >> 4))*180)/PI;
 
-
+#endif
 
     if(ConversionCount == 1500)
     {
@@ -189,8 +204,16 @@ adc_isr(void)
     return;
 }
 
+#if Rollback
+__interrupt void
+Qep_timeout_isr(void)
+{
 
+    temp_szamlalo++;
+    return;
+}
 
+#endif
 
 
 

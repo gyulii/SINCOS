@@ -126,6 +126,10 @@ void QepInit(void)
     EQep2Regs.QPOSMAX=0xffffffff;
     EQep2Regs.QEPCTL.bit.QPEN=1; // eQEP position counter is enabled
 
+
+    EQep2Regs.QEINT.bit.UTO = 1; // TIMEOUT TIMER INT ENABLE
+    EQep2Regs.QEINT.bit.IEL = 1; // INDEX EVENT INT ENABLE
+
     EQep2Regs.QCAPCTL.bit.UPPS=5;       // 1/32 alacsony sebeseghez jo lehet
     EQep2Regs.QCAPCTL.bit.CCPS=7;       // SYS/ 2exp7
     EQep2Regs.QCAPCTL.bit.CEN=1;
