@@ -107,7 +107,11 @@ void QepGpioInit(void)
 void QepInit(void)
 {
 
-    EQep2Regs.QUPRD=1500000;    //clk
+    EQep2Regs.QUPRD=1500000;    //Unit timer period, clk -> Sysclock
+
+
+
+
 
     EQep2Regs.QDECCTL.bit.QSRC=00;    //quadrature mode
 
@@ -115,10 +119,12 @@ void QepInit(void)
 
     EQep2Regs.QEPCTL.bit.PCRM=0; // Reset on COMP R
 
-    EQep2Regs.QEPCTL.bit.UTE=1;
-    EQep2Regs.QEPCTL.bit.QCLM=1;
+    EQep2Regs.QEPCTL.bit.UTE=1; // Unit timer enable
+
+    EQep2Regs.QEPCTL.bit.QCLM=1; // Position counter (QPOSLAT), capture timer (QCTMRLAT)  and capture period (QCPRDLAT) values are latched ON TIMEOUT
+    /* TO DO PERIOD */
     EQep2Regs.QPOSMAX=0xffffffff;
-    EQep2Regs.QEPCTL.bit.QPEN=1;
+    EQep2Regs.QEPCTL.bit.QPEN=1; // eQEP position counter is enabled
 
     EQep2Regs.QCAPCTL.bit.UPPS=5;       // 1/32 alacsony sebeseghez jo lehet
     EQep2Regs.QCAPCTL.bit.CCPS=7;       // SYS/ 2exp7
