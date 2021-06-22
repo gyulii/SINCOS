@@ -2,14 +2,14 @@
 //
 // VÁLTOZÓ DEFINIÁLÁS
 
-Uint16 volatile LoopCount;
-Uint16 volatile ConversionCount;
-Uint16 volatile Voltage1[1500];
-Uint16 volatile Voltage2[1500];
+volatile Uint16  LoopCount;
+volatile Uint16  ConversionCount;
+volatile Uint16  Voltage1[1500];
+volatile Uint16  Voltage2[1500];
 
-int16 volatile min_value_actual = 2000;
-int16 volatile min_value_last = 2000;
-int16 volatile min_value_result;
+volatile int16  min_value_actual = 2000;
+volatile int16  min_value_last = 2000;
+volatile int16  min_value_result;
 
 
 /*ADC offset konstans -> also ertek legyen 0, tapasztalat alapján valsztottam  */
