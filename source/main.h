@@ -107,13 +107,16 @@ void QepGpioInit(void)
 void QepInit(void)
 {
 
+# if 1
+    EQep2Regs.QPOSCNT = 78 ; // testest init
+    EQep2Regs.QPOSCMP = 500 ;
+#endif
+
+
     EQep2Regs.QUPRD=1500000;    //Unit timer period, clk -> Sysclock
 
 
-
-
-
-    EQep2Regs.QDECCTL.bit.QSRC=00;    //quadrature mode
+    EQep2Regs.QDECCTL.bit.QSRC=0;    //quadrature mode
 
     EQep2Regs.QEPCTL.bit.FREE_SOFT=2; // emulation kikapcs
 
@@ -123,9 +126,9 @@ void QepInit(void)
 
     EQep2Regs.QEPCTL.bit.QCLM=1; // Position counter (QPOSLAT), capture timer (QCTMRLAT)  and capture period (QCPRDLAT) values are latched ON TIMEOUT
     /* TO DO PERIOD */
-
-    EQep2Regs.QEPCTL.bit.IEL = 1;
-
+# if 1
+    EQep2Regs.QEPCTL.bit.IEL = 3;
+#endif
     EQep2Regs.QPOSMAX=0xffffffff;
 
 
@@ -142,6 +145,11 @@ void QepInit(void)
     EQep2Regs.QCAPCTL.bit.CCPS=7;       // SYS/ 2exp7
 
     EQep2Regs.QCAPCTL.bit.CEN=1;
+
+# if 0
+    EQep2Regs.QPOSCTL.bit.PCE = 1 ; // enable position compare unit
+    EQep2Regs.QEINT.bit.PCM = 1 ;   // enable pos compare interrupt
+#endif
 
 }
 

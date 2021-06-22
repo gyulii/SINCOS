@@ -212,7 +212,12 @@ Qep_timeout_isr(void)
     temp_szamlalo++;
 
   //  EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
-    EQep2Regs.QCLR.bit.IEL = 1;
+   EQep2Regs.QCLR.bit.IEL = 1;
+    //EQep2Regs.QPOSCMP += 200 ;
+
+      // Should be in this order
+    //EQep2Regs.QCLR.bit.PCM = 1 ;         // clear PCM
+
     EQep2Regs.QCLR.bit.INT = 1; // CLEAR INT FLAG
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP5; // INT A
     return;
