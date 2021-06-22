@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v6.4.6                      
 ******************************************************************************
->> Linked Tue Jun 22 09:16:20 2021
+>> Linked Tue Jun 22 09:59:51 2021
 
 OUTPUT FILE NAME:   <SIN_COS_FROM_EMPTY.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 000096b5
+ENTRY POINT SYMBOL: "_c_int00"  address: 000096ca
 
 
 MEMORY CONFIGURATION
@@ -14,8 +14,8 @@ MEMORY CONFIGURATION
 PAGE 0:
   BEGIN                 00000000   00000002  00000002  00000000  RWIX
   RAMM0                 00000050   000003b0  00000000  000003b0  RWIX
-  RAML0                 00008000   00001000  00000026  00000fda  RWIX
-  RAML1                 00009000   00001000  000007b2  0000084e  RWIX
+  RAML0                 00008000   00001000  0000002b  00000fd5  RWIX
+  RAML1                 00009000   00001000  000007c7  00000839  RWIX
   RAML2                 0000a000   00001000  00000000  00001000  RWIX
   RAML3                 0000b000   00001000  00000000  00001000  RWIX
   ZONE7A                00200000   0000fc00  00000000  0000fc00  RWIX
@@ -97,35 +97,35 @@ codestart
 *          0    00000000    00000002     
                   00000000    00000002     DSP2833x_CodeStartBranch.obj (codestart)
 
-.cinit     0    00008000    00000022     
-                  00008000    0000000a     rts2800_fpu32.lib : exit.obj (.cinit)
-                  0000800a    00000008     main.obj (.cinit)
-                  00008012    00000005     rts2800_fpu32.lib : _lock.obj (.cinit:__lock)
-                  00008017    00000005                       : _lock.obj (.cinit:__unlock)
-                  0000801c    00000004                       : errno.obj (.cinit)
-                  00008020    00000002     --HOLE-- [fill = 0]
+.cinit     0    00008000    00000027     
+                  00008000    0000000d     main.obj (.cinit)
+                  0000800d    0000000a     rts2800_fpu32.lib : exit.obj (.cinit)
+                  00008017    00000005                       : _lock.obj (.cinit:__lock)
+                  0000801c    00000005                       : _lock.obj (.cinit:__unlock)
+                  00008021    00000004                       : errno.obj (.cinit)
+                  00008025    00000002     --HOLE-- [fill = 0]
 
-ramfuncs   0    00008022    00000004     
-                  00008022    00000004     DSP2833x_usDelay.obj (ramfuncs)
+ramfuncs   0    00008027    00000004     
+                  00008027    00000004     DSP2833x_usDelay.obj (ramfuncs)
 
 .pinit     0    00008000    00000000     UNINITIALIZED
 
-.text      0    00009000    000007b2     
+.text      0    00009000    000007c7     
                   00009000    00000316     DSP2833x_DefaultIsr.obj (.text:retain)
                   00009316    000000f8     DSP2833x_SysCtrl.obj (.text)
                   0000940e    000000d0     main.obj (.text)
                   000094de    000000c9     rts2800_fpu32.lib : atan2.obj (.text)
-                  000095a7    00000088                       : fs_div.obj (.text)
-                  0000962f    00000086     main.obj (.text:retain)
-                  000096b5    00000046     rts2800_fpu32.lib : boot.obj (.text)
-                  000096fb    00000028     DSP2833x_PieCtrl.obj (.text)
-                  00009723    00000022     DSP2833x_PieVect.obj (.text)
-                  00009745    00000019     rts2800_fpu32.lib : args_main.obj (.text)
-                  0000975e    00000019                       : exit.obj (.text)
-                  00009777    00000016                       : frexp.obj (.text)
-                  0000978d    00000014     DSP2833x_Adc.obj (.text)
-                  000097a1    00000009     rts2800_fpu32.lib : _lock.obj (.text)
-                  000097aa    00000008     DSP2833x_CodeStartBranch.obj (.text)
+                  000095a7    0000009b     main.obj (.text:retain)
+                  00009642    00000088     rts2800_fpu32.lib : fs_div.obj (.text)
+                  000096ca    00000046                       : boot.obj (.text)
+                  00009710    00000028     DSP2833x_PieCtrl.obj (.text)
+                  00009738    00000022     DSP2833x_PieVect.obj (.text)
+                  0000975a    00000019     rts2800_fpu32.lib : args_main.obj (.text)
+                  00009773    00000019                       : exit.obj (.text)
+                  0000978c    00000016                       : frexp.obj (.text)
+                  000097a2    00000014     DSP2833x_Adc.obj (.text)
+                  000097b6    00000009     rts2800_fpu32.lib : _lock.obj (.text)
+                  000097bf    00000008     DSP2833x_CodeStartBranch.obj (.text)
 
 .adc_cal   0    00380080    00000007     NOLOAD SECTION
                   00380080    00000007     DSP2833x_ADC_cal.obj (.adc_cal)
@@ -450,12 +450,13 @@ address     data page           name
 0000c002     300 (0000c000)     _min_value_actual
 0000c003     300 (0000c000)     _ConversionCount
 0000c004     300 (0000c000)     _min_value_last
-0000c006     300 (0000c000)     _g_qepCounter
+0000c006     300 (0000c000)     _fordulatokszamaproba
 0000c008     300 (0000c000)     _Angle
+0000c00a     300 (0000c000)     _g_qepCounter
 
-0000c040     301 (0000c040)     _Voltage2
+0000c040     301 (0000c040)     _Voltage1
 
-0000c640     319 (0000c640)     _Voltage1
+0000c640     319 (0000c640)     _Voltage2
 
 0000cc1c     330 (0000cc00)     ___TI_cleanup_ptr
 0000cc1e     330 (0000cc00)     ___TI_dtors_ptr
@@ -475,8 +476,8 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                           
 ----  -------   ----                           
 abs   ffffffff  .text                          
-0     0000975e  C$$EXIT                        
-0     000095a7  FS$$DIV                        
+0     00009773  C$$EXIT                        
+0     00009642  FS$$DIV                        
 0     000090e6  _ADCINT_ISR                    
 0     00380080  _ADC_cal                       
 1     00000b00  _AdcMirror                     
@@ -496,7 +497,7 @@ abs   ffffffff  .text
 0     00009226  _DINTCH4_ISR                   
 0     00009230  _DINTCH5_ISR                   
 0     0000923a  _DINTCH6_ISR                   
-0     00008022  _DSP28x_usDelay                
+0     00008027  _DSP28x_usDelay                
 1     00000880  _DevEmuRegs                    
 0     00009329  _DisableDog                    
 1     00001000  _DmaRegs                       
@@ -549,7 +550,7 @@ abs   ffffffff  .text
 0     000091c2  _EQEP2_INT_ISR                 
 1     00006b00  _EQep1Regs                     
 1     00006b40  _EQep2Regs                     
-0     0000971a  _EnableInterrupts              
+0     0000972f  _EnableInterrupts              
 1     00000a80  _FlashRegs                     
 1     00006f80  _GpioCtrlRegs                  
 1     00006fc0  _GpioDataRegs                  
@@ -560,10 +561,10 @@ abs   ffffffff  .text
 0     0000903c  _ILLEGAL_ISR                   
 0     00009000  _INT13_ISR                     
 0     0000900a  _INT14_ISR                     
-0     0000978d  _InitAdc                       
+0     000097a2  _InitAdc                       
 0     00009382  _InitPeripheralClocks          
-0     000096fb  _InitPieCtrl                   
-0     00009723  _InitPieVectTable              
+0     00009710  _InitPieCtrl                   
+0     00009738  _InitPieVectTable              
 0     00009331  _InitPll                       
 0     00009316  _InitSysCtrl                   
 0     000092f8  _LUF_ISR                       
@@ -615,8 +616,8 @@ abs   ffffffff  .text
 0     00009082  _USER7_ISR                     
 0     0000908c  _USER8_ISR                     
 0     00009096  _USER9_ISR                     
-1     0000c640  _Voltage1                      
-1     0000c040  _Voltage2                      
+1     0000c040  _Voltage1                      
+1     0000c640  _Voltage2                      
 0     000090fa  _WAKEINT_ISR                   
 0     000090d2  _XINT1_ISR                     
 0     000090dc  _XINT2_ISR                     
@@ -637,25 +638,26 @@ abs   ffffffff  ___c_args__
 abs   ffffffff  ___etext__                     
 abs   ffffffff  ___pinit__                     
 abs   ffffffff  ___text__                      
-0     00009745  __args_main                    
+0     0000975a  __args_main                    
 1     0000cc20  __lock                         
-0     000097a9  __nop                          
-0     000097a5  __register_lock                
-0     000097a1  __register_unlock              
+0     000097be  __nop                          
+0     000097ba  __register_lock                
+0     000097b6  __register_unlock              
 1     00000400  __stack                        
 1     0000cc22  __unlock                       
-0     0000975e  _abort                         
+0     00009773  _abort                         
 0     0000943d  _adc_config                    
-0     0000962f  _adc_isr                       
+0     000095a7  _adc_isr                       
 0     00009420  _adc_reinit_for_next_measurment
 0     000094de  _atan2                         
-0     000096b5  _c_int00                       
+0     000096ca  _c_int00                       
 0     0000944c  _epwm_config                   
 1     0000cc24  _errno                         
-0     00009760  _exit                          
+0     00009775  _exit                          
 0     0000940e  _find_adc_min_value            
-0     00009777  _frexp                         
-1     0000c006  _g_qepCounter                  
+1     0000c006  _fordulatokszamaproba          
+0     0000978c  _frexp                         
+1     0000c00a  _g_qepCounter                  
 0     000094a7  _main                          
 1     0000c002  _min_value_actual              
 1     0000c004  _min_value_last                
@@ -677,7 +679,7 @@ page  address   name
 0     00000000  code_start                     
 0     00008000  ___cinit__                     
 0     00008000  cinit                          
-0     00008022  _DSP28x_usDelay                
+0     00008027  _DSP28x_usDelay                
 0     00009000  _INT13_ISR                     
 0     0000900a  _INT14_ISR                     
 0     00009014  _DATALOG_ISR                   
@@ -775,21 +777,21 @@ page  address   name
 0     000094a3  _QepReadCounter                
 0     000094a7  _main                          
 0     000094de  _atan2                         
-0     000095a7  FS$$DIV                        
-0     0000962f  _adc_isr                       
-0     000096b5  _c_int00                       
-0     000096fb  _InitPieCtrl                   
-0     0000971a  _EnableInterrupts              
-0     00009723  _InitPieVectTable              
-0     00009745  __args_main                    
-0     0000975e  C$$EXIT                        
-0     0000975e  _abort                         
-0     00009760  _exit                          
-0     00009777  _frexp                         
-0     0000978d  _InitAdc                       
-0     000097a1  __register_unlock              
-0     000097a5  __register_lock                
-0     000097a9  __nop                          
+0     000095a7  _adc_isr                       
+0     00009642  FS$$DIV                        
+0     000096ca  _c_int00                       
+0     00009710  _InitPieCtrl                   
+0     0000972f  _EnableInterrupts              
+0     00009738  _InitPieVectTable              
+0     0000975a  __args_main                    
+0     00009773  C$$EXIT                        
+0     00009773  _abort                         
+0     00009775  _exit                          
+0     0000978c  _frexp                         
+0     000097a2  _InitAdc                       
+0     000097b6  __register_unlock              
+0     000097ba  __register_lock                
+0     000097be  __nop                          
 0     00380080  _ADC_cal                       
 1     00000400  __stack                        
 1     00000700  __STACK_END                    
@@ -846,10 +848,11 @@ page  address   name
 1     0000c002  _min_value_actual              
 1     0000c003  _ConversionCount               
 1     0000c004  _min_value_last                
-1     0000c006  _g_qepCounter                  
+1     0000c006  _fordulatokszamaproba          
 1     0000c008  _Angle                         
-1     0000c040  _Voltage2                      
-1     0000c640  _Voltage1                      
+1     0000c00a  _g_qepCounter                  
+1     0000c040  _Voltage1                      
+1     0000c640  _Voltage2                      
 1     0000cc1c  ___TI_cleanup_ptr              
 1     0000cc1e  ___TI_dtors_ptr                
 1     0000cc20  __lock                         
@@ -869,4 +872,4 @@ abs   ffffffff  binit
 abs   ffffffff  etext                          
 abs   ffffffff  pinit                          
 
-[194 symbols]
+[195 symbols]
