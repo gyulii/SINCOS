@@ -11,6 +11,11 @@ int16 volatile min_value_actual = 2000;
 int16 volatile min_value_last = 2000;
 int16 volatile min_value_result;
 
+
+/*ADC offset konstans -> also ertek legyen 0, tapasztalat alapján valsztottam  */
+
+#define AdcOffset -1535
+
 /* QEP Globals */
 
 int32 volatile g_qepCounter;

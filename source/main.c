@@ -128,6 +128,7 @@ int main(void)
     /* TO DO -> SAMPLING freki kalibralasa*/
 
     QepInit();
+
     QepGpioInit();
 
 
@@ -137,8 +138,9 @@ int main(void)
     {
 #ifndef NDEBUG
         LoopCount++;
-    }
 #endif
+    }
+
 }
 
 __interrupt void
@@ -153,8 +155,8 @@ adc_isr(void)
     find_adc_min_value();
 
 
-    Voltage1[ConversionCount] = readAdcValue_Channel_1(-1535);
-    Voltage2[ConversionCount] = readAdcValue_Channel_2(-1535);
+    Voltage1[ConversionCount] = readAdcValue_Channel_1(AdcOffset);
+    Voltage2[ConversionCount] = readAdcValue_Channel_2(AdcOffset);
 
     atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
     Angle = (atan2((AdcRegs.ADCRESULT0 >> 4),(AdcRegs.ADCRESULT1 >> 4))*180)/PI;
