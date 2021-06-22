@@ -123,15 +123,24 @@ void QepInit(void)
 
     EQep2Regs.QEPCTL.bit.QCLM=1; // Position counter (QPOSLAT), capture timer (QCTMRLAT)  and capture period (QCPRDLAT) values are latched ON TIMEOUT
     /* TO DO PERIOD */
+
+    EQep2Regs.QEPCTL.bit.IEL = 1;
+
     EQep2Regs.QPOSMAX=0xffffffff;
+
+
     EQep2Regs.QEPCTL.bit.QPEN=1; // eQEP position counter is enabled
 
 
-    EQep2Regs.QEINT.bit.UTO = 1; // TIMEOUT TIMER INT ENABLE
+
+    //EQep2Regs.QEINT.bit.UTO = 1; // TIMEOUT TIMER INT ENABLE
+
     EQep2Regs.QEINT.bit.IEL = 1; // INDEX EVENT INT ENABLE
 
+    /*TO DO meg tesztelni kell a megfelelo ertekeket*/
     EQep2Regs.QCAPCTL.bit.UPPS=5;       // 1/32 alacsony sebeseghez jo lehet
     EQep2Regs.QCAPCTL.bit.CCPS=7;       // SYS/ 2exp7
+
     EQep2Regs.QCAPCTL.bit.CEN=1;
 
 }

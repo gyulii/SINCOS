@@ -25,9 +25,9 @@ double fordulatokszamaproba=0;
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
-#if Rollback
+
 __interrupt void Qep_timeout_isr(void);
-#endif
+
 
 #if 0
 /* Flashbol futashoz */
@@ -114,16 +114,16 @@ int main(void)
 
     EALLOW; // This is needed to write to EALLOW protected register
     PieVectTable.ADCINT = &adc_isr;
-#if Rollback
     PieVectTable.EQEP2_INT = &Qep_timeout_isr;
-#endif
+
     EDIS;   // This is needed to disable write to EALLOW protected registers
 
 
     InitAdc();
 
     PieCtrlRegs.PIEIER1.bit.INTx6 = 1;  // Enable ADCINT in PIE
-    IER |= M_INT1;      // Enable CPU Interrupt 1
+    PieCtrlRegs.PIEIER5.bit.INTx2 = 1;  // Enable QEP int
+    IER |= M_INT1 | M_INT5;      // Enable CPU Interrupt 1 and CPU Interrupt 5 (QEP)
     EINT; // Enable Global interrupt INTMk
     ERTM;  // Enable Global realtime interrupt DBGM
 
@@ -163,9 +163,9 @@ adc_isr(void)
 
 
     g_qepCounter = QepReadCounter();
-#if Rollback
+
     fordulatokszamaproba=g_qepCounter/4096;
-#endif
+
 
 
 #ifndef NDEBUG
@@ -176,14 +176,14 @@ adc_isr(void)
     Voltage1[ConversionCount] = readAdcValue_Channel_1(AdcOffset);
     Voltage2[ConversionCount] = readAdcValue_Channel_2(AdcOffset);
 
-#if Rollback
+
     //arctan hasznalatanak modja
     atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
 
     //szog meghatarozasa
     Angle = (atan2((AdcRegs.ADCRESULT0 >> 4),(AdcRegs.ADCRESULT1 >> 4))*180)/PI;
 
-#endif
+
 
     if(ConversionCount == 1500)
     {
@@ -204,16 +204,22 @@ adc_isr(void)
     return;
 }
 
-#if Rollback
+
 __interrupt void
 Qep_timeout_isr(void)
 {
 
     temp_szamlalo++;
+
+  //  EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
+    EQep2Regs.QCLR.bit.IEL = 1;
+    EQep2Regs.QCLR.bit.INT = 1; // CLEAR INT FLAG
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP5; // INT A
     return;
+
+
 }
 
-#endif
 
 
 
