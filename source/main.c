@@ -10,16 +10,18 @@
 
 #include "main.h"
 
-//Arctan fuggvenyhez kell
+//Arctan fuggvenyhez kell a math.h, valamint PI és Angle a szogszamitashoz
 #include <math.h>
 #define PI 3.1415926535
+double Angle;
+
+double fordulatokszamaproba=0;
+
 
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
 
-
-double Angle;
 
 
 #if 0
@@ -128,7 +130,6 @@ int main(void)
     /* TO DO -> SAMPLING freki kalibralasa*/
 
     QepInit();
-
     QepGpioInit();
 
 
@@ -138,9 +139,8 @@ int main(void)
     {
 #ifndef NDEBUG
         LoopCount++;
-#endif
     }
-
+#endif
 }
 
 __interrupt void
@@ -149,16 +149,22 @@ adc_isr(void)
 
 
     g_qepCounter = QepReadCounter();
+    fordulatokszamaproba=g_qepCounter/4096;
+
+
 
 #ifndef NDEBUG
 
     find_adc_min_value();
 
 
-    Voltage1[ConversionCount] = readAdcValue_Channel_1(AdcOffset);
-    Voltage2[ConversionCount] = readAdcValue_Channel_2(AdcOffset);
+    Voltage1[ConversionCount] = readAdcValue_Channel_1(-1535);
+    Voltage2[ConversionCount] = readAdcValue_Channel_2(-1535);
 
+    //arctan hasznalatanak modja
     atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
+
+    //szog meghatarozasa
     Angle = (atan2((AdcRegs.ADCRESULT0 >> 4),(AdcRegs.ADCRESULT1 >> 4))*180)/PI;
 
 
