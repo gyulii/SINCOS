@@ -164,6 +164,8 @@ adc_isr(void)
 
     g_qepCounter = QepReadCounter();
 
+    //Fordulatok szamat szepen szamolja, negativ es pozitiv iranyban is. Problema meg vele,
+    //hogy tulcsordul es 0-nal valamiert ket fordulat utan ugrik csak a szamlalo
     fordulatokszamaproba=g_qepCounter/4096;
 
 

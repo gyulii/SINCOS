@@ -108,8 +108,8 @@ void QepInit(void)
 {
 
 # if 1
-    EQep2Regs.QPOSCNT = 78 ; // testest init
-    EQep2Regs.QPOSCMP = 500 ;
+    EQep2Regs.QPOSCNT = 78; // testest init
+    EQep2Regs.QPOSCMP = 500;
 #endif
 
 
