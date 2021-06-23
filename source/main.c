@@ -210,7 +210,8 @@ adc_isr(void)
 __interrupt void
 Qep_timeout_isr(void)
 {
-
+    //egyelore ez a resz nem teljesen vilagos, de hektikusan viselkedik a kod itt. Van amikor tem_szamlalo 1-re valt, de utana
+    //ott ragad, maskor nem csinal semmit es vegig 0
     temp_szamlalo++;
 
   //  EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
