@@ -168,7 +168,7 @@ adc_isr(void)
     //hogy tulcsordul es 0-nal valamiert ket fordulat utan ugrik csak a szamlalo
     //atgondolva helyesen mukodik 0-nal, hisz ott -4096-tol 4096-ig megy a szamlalo es lenyegeben itt azt vizsgaljuk,
     //hogy nulla referencia ponthoz kepest melyik iranyba mennyi kort fordult a tengely
-    if(g_qepCounter)
+
     fordulatokszamaproba=g_qepCounter/4096;
 
 
