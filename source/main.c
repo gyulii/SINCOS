@@ -20,6 +20,7 @@
 double Angle;
 
 double fordulatokszamaproba=0;
+double egysegesitett_fordulatokszama=0;
 
 
 // Function Prototypes
@@ -171,6 +172,14 @@ adc_isr(void)
 
     fordulatokszamaproba=g_qepCounter/4096;
 
+
+    //Ebben a reszben egyseges reszekre van osztva a tartomany, azaz 0 is egy kort foglal magaba
+    if(g_qepCounter>0){
+          egysegesitett_fordulatokszama=((g_qepCounter)+2048)/4096;
+    }
+    if(g_qepCounter<=0){
+            egysegesitett_fordulatokszama=((g_qepCounter)-2048)/4096;
+    }
 
 
 #ifndef NDEBUG
