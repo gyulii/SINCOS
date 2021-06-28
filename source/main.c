@@ -235,12 +235,28 @@ Qep_timeout_isr(void)
     //ott ragad, maskor nem csinal semmit es vegig 0
     temp_szamlalo++;
 
-  //  EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
+
+
+    /*
+     *
+     * IDE JÖHET A KOD
+     *
+     * */
+
+
+
+
+
+    EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
+
+
+#if 0
    EQep2Regs.QCLR.bit.IEL = 1;
     //EQep2Regs.QPOSCMP += 200 ;
 
       // Should be in this order
     //EQep2Regs.QCLR.bit.PCM = 1 ;         // clear PCM
+#endif
 
     EQep2Regs.QCLR.bit.INT = 1; // CLEAR INT FLAG
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP5; // INT A
