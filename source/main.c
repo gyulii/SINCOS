@@ -21,6 +21,7 @@ double Angle;
 
 double fordulatokszamaproba=0;
 double egysegesitett_fordulatokszama=0;
+double fordulatszamproba=0;
 
 
 // Function Prototypes
@@ -177,9 +178,17 @@ adc_isr(void)
     if(g_qepCounter>0){
           egysegesitett_fordulatokszama=((g_qepCounter)+2048)/4096;
     }
+
     if(g_qepCounter<=0){
-            egysegesitett_fordulatokszama=((g_qepCounter)-2048)/4096;
+          egysegesitett_fordulatokszama=((g_qepCounter)-2048)/4096;
     }
+
+    //fordulatszam szamitasa vazlatosan: megmerjuk, hogy egy fordulat mennyi ido alatt megy vegbe sec-ben. Majd egy
+    //percet (60 sec) a mert idovel elsoztjuk. Persze lehet orat is vagy amit szeretnenk. Az osztas vegeredmenye lesz
+    //az aktualis fordulatszam. Persze ezt csak nagyobb fordulatnal lehet alkalmazni, mert kisebbnel a perióduson belül is
+    //mernunk kell
+
+
 
 
 #ifndef NDEBUG
