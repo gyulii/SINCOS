@@ -7,9 +7,22 @@ volatile Uint16  ConversionCount;
 volatile Uint16  Voltage1[1500];
 volatile Uint16  Voltage2[1500];
 
-volatile int16  min_value_actual = 2000;
-volatile int16  min_value_last = 2000;
-volatile int16  min_value_result;
+
+
+
+
+/*    //Arctan fuggvenyhez kell a math.h, valamint PI és Angle a szogszamitashoz    */
+
+
+
+#include <math.h>
+#define PI 3.1415926535
+double Angle;
+
+double fordulatokszamaproba=0;
+double egysegesitett_fordulatokszama=0;
+double fordulatszamproba=0;
+
 
 
 /*ADC offset konstans -> also ertek legyen 0, tapasztalat alapján valsztottam  */
@@ -18,19 +31,21 @@ volatile int16  min_value_result;
 
 /* QEP Globals */
 
-int32 volatile g_qepCounter;
+volatile int32  g_qepCounter;
+
+/*   ADC Globals       */
+
+volatile Uint16 g_AdcChanel_A;
+volatile Uint16 g_AdcChanel_B;
 
 
+volatile Uint16  g_min_value_actual = 50000;
+volatile Uint16  g_min_value_result = 55000;
 
-void find_adc_min_value()
-{
-    /*       MIN megtalalas        */
-    min_value_actual = (AdcRegs.ADCRESULT0 >> 4) - 1535;
-    if (min_value_actual < min_value_result)
-        min_value_result = min_value_actual;
+volatile Uint16  g_max_value_actual = 20000;
+volatile Uint16  g_max_value_result = 25000;
 
-    min_value_last = min_value_actual;
-}
+volatile Uint16 g_adc_avg;
 
 void adc_reinit_for_next_measurment()
 {
@@ -42,14 +57,14 @@ void adc_reinit_for_next_measurment()
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 }
 
-int readAdcValue_Channel_1 (int offset)
+int AdcReadValue_Channel_1 (void)
 {
-    return ((AdcRegs.ADCRESULT0 >> 4) + offset);
+    return (AdcRegs.ADCRESULT0);
 }
 
-int readAdcValue_Channel_2 (int offset)
+int AdcReadValue_Channel_2 (void)
 {
-   return ((AdcRegs.ADCRESULT1 >> 4) + offset);
+   return (AdcRegs.ADCRESULT1 );
 }
 
 void adc_config()
@@ -77,8 +92,8 @@ void epwm_config()
     EPwm1Regs.ETSEL.bit.SOCAEN = 1; // Enable SOC on A group
     EPwm1Regs.ETSEL.bit.SOCASEL = 2; // Enable event time-base counter equal to period
     EPwm1Regs.ETPS.bit.SOCAPRD = 1; // Generate pulse on 1st event
-    //EPwm1Regs.CMPA.half.CMPA = 0x0080; // Set compare A value
-    EPwm1Regs.TBPRD = 1500; // Set period for ePWM1 -> 100kHz Sample
+
+    EPwm1Regs.TBPRD = 3000; // Set period for ePWM1 -> 100kHz Sample
     EPwm1Regs.TBCTL.bit.CTRMODE = 0; // count up and start
 }
 
@@ -104,6 +119,36 @@ void QepGpioInit(void)
     EDIS;
 }
 
+void find_adc_min_value()
+{
+    /*       MIN megtalalas        */
+    g_min_value_actual = AdcReadValue_Channel_1();
+    if (g_min_value_actual < g_min_value_result)
+    {
+        g_min_value_result = g_min_value_actual;
+    }
+}
+
+void find_adc_max_value()
+{
+    /*       Max megtalalas        */
+    g_max_value_actual = AdcReadValue_Channel_1();
+    if (g_max_value_actual > g_max_value_result)
+    {
+        g_max_value_result = g_max_value_actual;
+    }
+}
+
+Uint16 find_adc_avg()
+{
+    int32 tmp_max = g_max_value_result;
+    int32 tmp_min = g_min_value_result;
+    int32 temp_valtozo = tmp_max + tmp_min;
+    temp_valtozo = temp_valtozo / 2;
+    return temp_valtozo;
+}
+
+
 void QepInit(void)
 {
 
@@ -113,7 +158,7 @@ void QepInit(void)
 #endif
 
 
-    EQep2Regs.QUPRD=1500000;    //Unit timer period, clk -> Sysclock
+    EQep2Regs.QUPRD=150000000;    //Unit timer period, clk -> Sysclock
 
 
     EQep2Regs.QDECCTL.bit.QSRC=0;    //quadrature mode
@@ -135,10 +180,11 @@ void QepInit(void)
     EQep2Regs.QEPCTL.bit.QPEN=1; // eQEP position counter is enabled
 
 
-
-    EQep2Regs.QEINT.bit.UTO = 1; // TIMEOUT TIMER INT ENABLE
-#if 0
     EQep2Regs.QEINT.bit.IEL = 1; // INDEX EVENT INT ENABLE
+
+#if 0
+    EQep2Regs.QEINT.bit.UTO = 1; // TIMEOUT TIMER INT ENABLE
+
 #endif
 
     /*TO DO meg tesztelni kell a megfelelo ertekeket*/

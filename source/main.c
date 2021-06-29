@@ -14,15 +14,6 @@
 
 #include "main.h"
 
-//Arctan fuggvenyhez kell a math.h, valamint PI és Angle a szogszamitashoz
-#include <math.h>
-#define PI 3.1415926535
-double Angle;
-
-double fordulatokszamaproba=0;
-double egysegesitett_fordulatokszama=0;
-double fordulatszamproba=0;
-
 
 // Function Prototypes
 //
@@ -164,23 +155,28 @@ adc_isr(void)
 {
 
 
+
+
+
+
     g_qepCounter = QepReadCounter();
 
-    //Fordulatok szamat szepen szamolja, negativ es pozitiv iranyban is. Problema meg vele,
-    //hogy tulcsordul es 0-nal valamiert ket fordulat utan ugrik csak a szamlalo
-    //atgondolva helyesen mukodik 0-nal, hisz ott -4096-tol 4096-ig megy a szamlalo es lenyegeben itt azt vizsgaljuk,
-    //hogy nulla referencia ponthoz kepest melyik iranyba mennyi kort fordult a tengely
+    g_AdcChanel_A = AdcReadValue_Channel_1();
+    g_AdcChanel_B = AdcReadValue_Channel_2();
 
-    fordulatokszamaproba=g_qepCounter/4096;
+    find_adc_min_value();
+    find_adc_max_value();
+    g_adc_avg =  find_adc_avg();
 
 
-    //Ebben a reszben egyseges reszekre van osztva a tartomany, azaz 0 is egy kort foglal magaba
-    if(g_qepCounter>0){
-          egysegesitett_fordulatokszama=((g_qepCounter)+2048)/4096;
+
+    if(g_AdcChanel_A > g_adc_avg)
+    {
+        Angle = atan2((g_AdcChanel_B), (g_AdcChanel_A));
     }
+    else
+    {
 
-    if(g_qepCounter<=0){
-          egysegesitett_fordulatokszama=((g_qepCounter)-2048)/4096;
     }
 
     //fordulatszam szamitasa vazlatosan: megmerjuk, hogy egy fordulat mennyi ido alatt megy vegbe sec-ben. Majd egy
@@ -196,18 +192,11 @@ adc_isr(void)
     find_adc_min_value();
 
 
-    Voltage1[ConversionCount] = readAdcValue_Channel_1(AdcOffset);
-    Voltage2[ConversionCount] = readAdcValue_Channel_2(AdcOffset);
+    Voltage1[ConversionCount] = AdcReadValue_Channel_1();
+    Voltage2[ConversionCount] = AdcReadValue_Channel_2();
 
 
-    //arctan hasznalatanak modja
-    atan2((AdcRegs.ADCRESULT0 >> 4), (AdcRegs.ADCRESULT1 >> 4));
-
-    //szog meghatarozasa
-    Angle = (atan2((AdcRegs.ADCRESULT0 >> 4),(AdcRegs.ADCRESULT1 >> 4))*180)/PI;
-
-
-
+#ifndef NDEBUG
     if(ConversionCount == 1500)
     {
         ConversionCount = 0;
@@ -217,7 +206,7 @@ adc_isr(void)
         ConversionCount++;
     }
 
-
+#endif
 #endif
 
 
@@ -233,8 +222,10 @@ Qep_timeout_isr(void)
 {
     //egyelore ez a resz nem teljesen vilagos, de hektikusan viselkedik a kod itt. Van amikor tem_szamlalo 1-re valt, de utana
     //ott ragad, maskor nem csinal semmit es vegig 0
-    temp_szamlalo++;
 
+#ifndef NDEBUG
+    temp_szamlalo++;
+#endif
 
 
     /*
@@ -247,17 +238,17 @@ Qep_timeout_isr(void)
 
 
 
-    EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
+   // EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
 
 
 #if 0
-   EQep2Regs.QCLR.bit.IEL = 1;
+
     //EQep2Regs.QPOSCMP += 200 ;
 
       // Should be in this order
     //EQep2Regs.QCLR.bit.PCM = 1 ;         // clear PCM
 #endif
-
+    EQep2Regs.QCLR.bit.IEL = 1;
     EQep2Regs.QCLR.bit.INT = 1; // CLEAR INT FLAG
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP5; // INT A
     return;
