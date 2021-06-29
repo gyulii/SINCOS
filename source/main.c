@@ -14,12 +14,17 @@
 
 #include "main.h"
 
+/*    IQ       */
+
+
 
 // Function Prototypes
 //
 __interrupt void adc_isr(void);
 
 __interrupt void Qep_timeout_isr(void);
+
+
 
 
 #if 0
@@ -32,9 +37,17 @@ extern Uint16 RamfuncsRunStart;
 
 #ifndef NDEBUG
 
+float g_float_temp = 0;
+int a,b;
+
+float tarolo[150];
+
+
+
 int temp_szamlalo = 0;
 
 #endif
+
 
 
 int main(void)
@@ -155,10 +168,6 @@ adc_isr(void)
 {
 
 
-
-
-
-
     g_qepCounter = QepReadCounter();
 
     g_AdcChanel_A = AdcReadValue_Channel_1();
@@ -170,26 +179,26 @@ adc_isr(void)
 
 
 
-    if(g_AdcChanel_A > g_adc_avg)
+    a = g_AdcChanel_A - g_adc_avg;
+    b = g_AdcChanel_B - g_adc_avg;
+
+    float res = (float) b / (float) a;
+
+    angle = atan(res);
+
+    if(a > 0)
     {
-        Angle = atan2((g_AdcChanel_B), (g_AdcChanel_A));
+        angle = angle + 1.5707;
     }
     else
     {
-
+        angle = angle + 4.7123;
     }
 
-    //fordulatszam szamitasa vazlatosan: megmerjuk, hogy egy fordulat mennyi ido alatt megy vegbe sec-ben. Majd egy
-    //percet (60 sec) a mert idovel elsoztjuk. Persze lehet orat is vagy amit szeretnenk. Az osztas vegeredmenye lesz
-    //az aktualis fordulatszam. Persze ezt csak nagyobb fordulatnal lehet alkalmazni, mert kisebbnel a perióduson belül is
-    //mernunk kell
-
-
-
+    tarolo[ConversionCount] = angle;
 
 #ifndef NDEBUG
 
-    find_adc_min_value();
 
 
     Voltage1[ConversionCount] = AdcReadValue_Channel_1();

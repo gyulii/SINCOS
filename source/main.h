@@ -17,7 +17,7 @@ volatile Uint16  Voltage2[1500];
 
 #include <math.h>
 #define PI 3.1415926535
-double Angle;
+
 
 double fordulatokszamaproba=0;
 double egysegesitett_fordulatokszama=0;
@@ -47,6 +47,15 @@ volatile Uint16  g_max_value_result = 25000;
 
 volatile Uint16 g_adc_avg;
 
+
+
+/*Angle calculation */
+
+
+volatile float angle;
+
+
+
 void adc_reinit_for_next_measurment()
 {
     //
@@ -64,7 +73,7 @@ int AdcReadValue_Channel_1 (void)
 
 int AdcReadValue_Channel_2 (void)
 {
-   return (AdcRegs.ADCRESULT1 );
+   return (AdcRegs.ADCRESULT1);
 }
 
 void adc_config()
