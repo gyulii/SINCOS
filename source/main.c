@@ -37,12 +37,15 @@ extern Uint16 RamfuncsRunStart;
 
 #ifndef NDEBUG
 
+
+
+/* SEGEDVALTOZOK FINE ANGLE SZAMOLASHOZ */
 float g_float_temp = 0;
 int a,b;
 
 float tarolo[150];
 
-
+/*Ideiglenes szamlalo QEP teszteleshez  */
 
 int temp_szamlalo = 0;
 
@@ -184,16 +187,21 @@ adc_isr(void)
 
     float res = (float) b / (float) a;
 
-    angle = atan(res);
+    angle_fine = atan(res);
 
     if(a > 0)
     {
-        angle = angle + 1.5707;
+        angle_fine = angle_fine + 1.5707;
     }
     else
     {
-        angle = angle + 4.7123;
+        angle_fine = angle_fine + 4.7123;
     }
+
+    angle = (g_qepCounter >> 2) + (angle_fine/6.28318);
+    angle = angle * 0.00613592;
+    angle = angle * 180;
+    angle = angle/3.1415;
 
     tarolo[ConversionCount] = angle;
 

@@ -52,8 +52,10 @@ volatile Uint16 g_adc_avg;
 /*Angle calculation */
 
 
-volatile float angle;
+/* TO DO : STRUCTBA RAKNI EZEKET*/
 
+volatile float angle_fine;
+volatile float angle;
 
 
 void adc_reinit_for_next_measurment()
