@@ -179,8 +179,10 @@ adc_isr(void)
     {
         angles.angle_fine = angles.angle_fine + 4.7123; //(4.7123 rad = 270 fok)
     }
+
+    //Interpolated High-Resolution Angle Calculation (360 fok radianban)
     angles.angle = (g_qepCounter >> 2) + (angles.angle_fine/6.28318);
-    angles.angle = angles.angle *0.3515625;  // MAGIC NUMBER  -> (360/N) * (180/PI)
+    angles.angle = angles.angle *0.3515625;  // MAGIC NUMBER  -> (6.28318/N) * (180/PI)
     angles.angle_coarse = g_qepCounter * 0.08789062; // MAGIC NUMBER  -> (360/4*N)
 
 #ifndef NDEBUG

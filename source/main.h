@@ -1,3 +1,8 @@
+
+//Hasznos link a szogszamitas matematikai levezetesenek megertesehez:
+//https://www.ti.com/lit/ug/tidua05a/tidua05a.pdf?ts=1611819649961&ref_url=https%253A%252F%252Fwww.google.com%252F
+
+
 #include <math.h>
 
 /*Angle calculation */
@@ -5,9 +10,9 @@
 
 typedef struct angles
 {
-    volatile float angle_fine;
-    volatile float angle_coarse;
-    volatile float angle;
+    volatile float angle_fine; // Fine Resolution Angle Calculation in radian
+    volatile float angle_coarse; // Coarse Resolution Angle Calculation in degree
+    volatile float angle; // Interpolated High-Resolution Angle Calculation in degree
 
 }angle_t;
 
