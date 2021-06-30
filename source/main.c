@@ -135,24 +135,14 @@ int main(void)
     ConversionCount = 0;
 #endif
 
-
     /*Adc konfiguracio*/
-
     adc_config();
-
-
     /*EPWM konfiguracio*/
-
     epwm_config();
 
-    /* TO DO -> SAMPLING freki kalibralasa*/
-
     QepInit();
+
     QepGpioInit();
-
-
-
-
     for (;;)
     {
 
