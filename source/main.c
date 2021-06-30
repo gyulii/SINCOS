@@ -181,7 +181,7 @@ adc_isr(void)
     }
 
     //Interpolated High-Resolution Angle Calculation (360 fok radianban)
-    angles.angle = (g_qepCounter >> 2) + (angles.angle_fine/6.28318);
+    angles.angle = (g_qepCounter >> 2) + (angles.angle_fine*0.1591549); // MAGIC NUMBER -> (1/2*PI)
     angles.angle = angles.angle *0.3515625;  // MAGIC NUMBER  -> (6.28318/N) * (180/PI)
     angles.angle_coarse = g_qepCounter * 0.08789062; // MAGIC NUMBER  -> (360/4*N)
 
