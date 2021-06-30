@@ -226,7 +226,7 @@ Qep_timeout_isr(void)
 #if 0
     EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
     EQep2Regs.QPOSCMP += 200 ;
-    EQep2Regs.QCLR.bit.PCM = 1 ;         // clear PCM
+    EQep2Regs.QCLR.bit.PCM = 1;         // clear PCM
 #endif
 
     QEP_reinit_for_next_interrupt();

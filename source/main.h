@@ -138,6 +138,7 @@ void find_adc_max_value()
 
 Uint16 find_adc_avg()
 {
+    /*      Kozepertek megtalalasa   */
     int32 tmp_max = g_max_value_result;
     int32 tmp_min = g_min_value_result;
     int32 temp_valtozo = tmp_max + tmp_min;
@@ -159,7 +160,7 @@ void adc_zero_crossing_find()
 void QepInit(void)
 {
 # if 1
-    EQep2Regs.QPOSCNT = 78; // testest init
+    EQep2Regs.QPOSCNT = 78; // test init
     EQep2Regs.QPOSCMP = 500;
 #endif
 
