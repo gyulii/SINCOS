@@ -4,7 +4,7 @@
  * main.c
  */
 
-#define NDEBUG
+//#define NDEBUG
 #define Rollback 0
 
 

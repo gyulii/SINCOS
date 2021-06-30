@@ -141,7 +141,7 @@ Uint16 find_adc_avg()
     int32 tmp_max = g_max_value_result;
     int32 tmp_min = g_min_value_result;
     int32 temp_valtozo = tmp_max + tmp_min;
-    temp_valtozo = temp_valtozo / 2;
+    temp_valtozo = temp_valtozo>>1;
     return temp_valtozo;
 }
 
