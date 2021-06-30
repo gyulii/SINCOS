@@ -43,7 +43,8 @@ extern Uint16 RamfuncsRunStart;
 volatile float g_float_temp = 0;
 volatile int a,b;
 
-float tarolo[150];
+float tarolo[500];
+float tarolo_coarse[500];
 
 /*Ideiglenes szamlalo QEP teszteleshez  */
 
@@ -200,10 +201,12 @@ adc_isr(void)
 
     angle = (g_qepCounter >> 2) + (angle_fine/6.28318);
 
+    /* MAGIC NUMBER  -> (360/N) * (180/PI)     */
     angle = angle *0.3515625;
+    angle_coarse = g_qepCounter * 0.08789062;
 
-
-    //tarolo[ConversionCount] = angle;
+    tarolo[ConversionCount] = angle;
+    tarolo_coarse[ConversionCount] = angle_coarse;
 
 #if 0
 

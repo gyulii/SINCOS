@@ -4,9 +4,10 @@
 
 volatile Uint16  LoopCount;
 volatile Uint16  ConversionCount;
+#if 0
 volatile Uint16  Voltage1[1500];
 volatile Uint16  Voltage2[1500];
-
+#endif
 
 
 
@@ -55,6 +56,7 @@ volatile Uint16 g_adc_avg;
 /* TO DO : STRUCTBA RAKNI EZEKET*/
 
 volatile float angle_fine;
+volatile float angle_coarse;
 volatile float angle;
 
 
