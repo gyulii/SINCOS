@@ -40,8 +40,8 @@ extern Uint16 RamfuncsRunStart;
 
 
 /* SEGEDVALTOZOK FINE ANGLE SZAMOLASHOZ */
-float g_float_temp = 0;
-int a,b;
+volatile float g_float_temp = 0;
+volatile int a,b;
 
 float tarolo[150];
 
@@ -199,19 +199,20 @@ adc_isr(void)
     }
 
     angle = (g_qepCounter >> 2) + (angle_fine/6.28318);
-    angle = angle * 0.00613592;
-    angle = angle * 180;
-    angle = angle/3.1415;
 
-    tarolo[ConversionCount] = angle;
+    angle = angle *0.3515625;
 
-#ifndef NDEBUG
+
+    //tarolo[ConversionCount] = angle;
+
+#if 0
 
 
 
     Voltage1[ConversionCount] = AdcReadValue_Channel_1();
     Voltage2[ConversionCount] = AdcReadValue_Channel_2();
 
+#endif
 
 #ifndef NDEBUG
     if(ConversionCount == 1500)
@@ -223,7 +224,7 @@ adc_isr(void)
         ConversionCount++;
     }
 
-#endif
+
 #endif
 
 
