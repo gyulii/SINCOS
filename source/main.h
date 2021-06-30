@@ -1,6 +1,9 @@
 
-//Hasznos link a szogszamitas matematikai levezetesenek megertesehez:
-//https://www.ti.com/lit/ug/tidua05a/tidua05a.pdf?ts=1611819649961&ref_url=https%253A%252F%252Fwww.google.com%252F
+/* Hasznos link a szogszamitas matematikai levezetesenek megertesehez:
+https://www.ti.com/lit/ug/tidua05a/tidua05a.pdf?ts=1611819649961&ref_url=https%253A%252F%252Fwww.google.com%252F
+
+Link az iqmath leirasahoz:
+https://www.ti.com/lit/ug/sprugg9/sprugg9.pdf?ts=1624959457335&ref_url=https%253A%252F%252Fwww.google.com%252F  */
 
 
 #include <math.h>
@@ -8,8 +11,8 @@
 /*    IQ       */
 
 #define   MATH_TYPE      IQ_MATH
-/* TO DO : MELYIK A LEGJOBB Q*/
-#define GLOBAL_Q 21
+
+#define GLOBAL_Q 19 //Tesztfuggveny alapjan kell az _iq19 vagy annal kisebb.
 #include "IQmathLib.h"
 
 
@@ -42,6 +45,7 @@ volatile Uint16  Voltage2[1500];
 /* SEGEDVALTOZOK FINE ANGLE SZAMOLASHOZ */
 volatile float g_float_temp = 0;
 int shifted_channel_A,shifted_channel_B;
+int teszt_shifted_channel_A,teszt_shifted_channel_B;
 
 #ifndef NDEBUG
 float tarolo[500];
@@ -64,6 +68,12 @@ volatile Uint16  g_min_value_actual = 50000;
 volatile Uint16  g_min_value_result = 55000;
 volatile Uint16  g_max_value_actual = 20000;
 volatile Uint16  g_max_value_result = 25000;
+
+#if 0
+/* iq-hoz letrehozott valtozok */
+float teszt_g_max_value_actual=1;
+float teszt_g_max_value_result=2;
+#endif
 
 /*FUGGVENYEK*/
 
@@ -177,7 +187,7 @@ void QepInit(void)
 
     EQep2Regs.QUPRD=150000000;    //Unit timer period, clk -> Sysclock
     EQep2Regs.QDECCTL.bit.QSRC=0;    //quadrature mode
-    EQep2Regs.QEPCTL.bit.FREE_SOFT=2; // emulation kikapcs
+    EQep2Regs.QEPCTL.bit.FREE_SOFT=2; // emulation kikapcsolasa
     EQep2Regs.QEPCTL.bit.PCRM=0; // Reset on COMP R
     EQep2Regs.QEPCTL.bit.UTE=1; // Unit timer enable
     EQep2Regs.QEPCTL.bit.QCLM=1; // Position counter (QPOSLAT), capture timer (QCTMRLAT)  and capture period (QCPRDLAT) values are latched ON TIMEOUT
@@ -229,3 +239,17 @@ _iq calculate_atan()
 
 }
 
+
+#if 0
+/* Megvizsgalja, hogy melyik a leheto legnagyobb atang-nal hasznalt arany ami elofordul,
+ igy megallapithato, hogy melyik _iq fuggvenyt kell hasznalni a megfelelo mukodes erdekeben. */
+void iq_max_arany_teszt(){
+    teszt_shifted_channel_A = g_AdcChanel_A - g_adc_avg;
+    teszt_shifted_channel_B = g_AdcChanel_B - g_adc_avg;
+    teszt_g_max_value_actual = teszt_shifted_channel_B/teszt_shifted_channel_A;
+        if (teszt_g_max_value_actual > teszt_g_max_value_result)
+        {
+            teszt_g_max_value_result = teszt_g_max_value_actual;
+        }
+}
+#endif

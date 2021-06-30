@@ -4,7 +4,7 @@
  * main.c
  */
 
-#define NDEBUG
+//#define NDEBUG
 #define Rollback 0
 
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
@@ -150,6 +150,10 @@ int main(void)
 __interrupt void
 adc_isr(void)
 {
+    #if 0
+    //iq maximalis arany tesztfuggveny
+    iq_max_arany_teszt();
+    #endif
 
     //Line count
     g_qepCounter = QepReadCounter();
