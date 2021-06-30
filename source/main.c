@@ -156,23 +156,28 @@ __interrupt void
 adc_isr(void)
 {
 
-
+    //Line count
     g_qepCounter = QepReadCounter();
 
+    //SIN és COS beolvasasa
     g_AdcChanel_A = AdcReadValue_Channel_A();
     g_AdcChanel_B = AdcReadValue_Channel_B();
 
+    //Kozepertek megkeresese annak erdekeben, hogy az atan fuggveny helyesen mukodjon
     adc_zero_crossing_find();
 
+    //Fine Resolution Angle Calculation
     angles.angle_fine = calculate_atan();
 
+    //Amennyiben SIN nagyobb, mint 0, akkor 90 fokot (radianban), ha kisebb akkor
+    //270 fokot (radianban) adunk az arctan eredmenyehez, hogy a megfelelo felsikon helyezkedjunk el
     if(shifted_channel_A > 0)
     {
-        angles.angle_fine = angles.angle_fine + 1.5707;
+        angles.angle_fine = angles.angle_fine + 1.5707; //(1.5707 rad = 90 fok)
     }
     else
     {
-        angles.angle_fine = angles.angle_fine + 4.7123;
+        angles.angle_fine = angles.angle_fine + 4.7123; //(4.7123 rad = 270 fok)
     }
     angles.angle = (g_qepCounter >> 2) + (angles.angle_fine/6.28318);
     angles.angle = angles.angle *0.3515625;  // MAGIC NUMBER  -> (360/N) * (180/PI)
