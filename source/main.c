@@ -181,33 +181,31 @@ adc_isr(void)
     find_adc_max_value();
     g_adc_avg =  find_adc_avg();
 
-
-
     a = g_AdcChanel_A - g_adc_avg;
     b = g_AdcChanel_B - g_adc_avg;
 
     float res = (float) b / (float) a;
 
-    angle_fine = atan(res);
+    angles.angle_fine = atan(res);
 
     if(a > 0)
     {
-        angle_fine = angle_fine + 1.5707;
+        angles.angle_fine = angles.angle_fine + 1.5707;
     }
     else
     {
-        angle_fine = angle_fine + 4.7123;
+        angles.angle_fine = angles.angle_fine + 4.7123;
     }
 
-    angle = (g_qepCounter >> 2) + (angle_fine/6.28318);
+    angles.angle = (g_qepCounter >> 2) + (angles.angle_fine/6.28318);
 
     /* MAGIC NUMBER  -> (360/N) * (180/PI)     */
-    angle = angle *0.3515625;
+    angles.angle = angles.angle *0.3515625;
     /* MAGIC NUMBER  -> (360/4*N)    */
-    angle_coarse = g_qepCounter * 0.08789062;
+    angles.angle_coarse = g_qepCounter * 0.08789062;
 #ifndef NDEBUG
-    tarolo[ConversionCount] = angle;
-    tarolo_coarse[ConversionCount] = angle_coarse;
+    tarolo[ConversionCount] = angles.angle;
+    tarolo_coarse[ConversionCount] = angles.angle_coarse;
 #endif
 
 #if 0

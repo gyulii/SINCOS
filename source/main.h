@@ -1,9 +1,30 @@
 
+
+
+/*Angle calculation */
+
+
+typedef struct angles
+{
+    volatile float angle_fine;
+    volatile float angle_coarse;
+    volatile float angle;
+
+}angle_t;
+
+
+
+
+
+
 //
 // VÁLTOZÓ DEFINIÁLÁS
 
 volatile Uint16  LoopCount;
 volatile Uint16  ConversionCount;
+volatile angle_t angles;
+
+
 #if 0
 volatile Uint16  Voltage1[1500];
 volatile Uint16  Voltage2[1500];
@@ -50,14 +71,6 @@ volatile Uint16 g_adc_avg;
 
 
 
-/*Angle calculation */
-
-
-/* TO DO : STRUCTBA RAKNI EZEKET*/
-
-volatile float angle_fine;
-volatile float angle_coarse;
-volatile float angle;
 
 
 void adc_reinit_for_next_measurment()
@@ -183,10 +196,7 @@ void QepInit(void)
     EQep2Regs.QEPCTL.bit.UTE=1; // Unit timer enable
 
     EQep2Regs.QEPCTL.bit.QCLM=1; // Position counter (QPOSLAT), capture timer (QCTMRLAT)  and capture period (QCPRDLAT) values are latched ON TIMEOUT
-    /* TO DO PERIOD */
-# if 0
-    EQep2Regs.QEPCTL.bit.IEL = 3;
-#endif
+
     EQep2Regs.QPOSMAX=0xffffffff;
 
 
@@ -197,10 +207,11 @@ void QepInit(void)
 
 #if 0
     EQep2Regs.QEINT.bit.UTO = 1; // TIMEOUT TIMER INT ENABLE
-
 #endif
 
+
     /*TO DO meg tesztelni kell a megfelelo ertekeket*/
+
     EQep2Regs.QCAPCTL.bit.UPPS=5;       // 1/32 alacsony sebeseghez jo lehet
     EQep2Regs.QCAPCTL.bit.CCPS=7;       // SYS/ 2exp7
 
