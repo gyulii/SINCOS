@@ -203,10 +203,12 @@ adc_isr(void)
 
     /* MAGIC NUMBER  -> (360/N) * (180/PI)     */
     angle = angle *0.3515625;
+    /* MAGIC NUMBER  -> (360/4*N)    */
     angle_coarse = g_qepCounter * 0.08789062;
-
+#ifndef NDEBUG
     tarolo[ConversionCount] = angle;
     tarolo_coarse[ConversionCount] = angle_coarse;
+#endif
 
 #if 0
 
