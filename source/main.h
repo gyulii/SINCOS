@@ -207,8 +207,8 @@ void QEP_reinit_for_next_interrupt()
 
 float calculate_atan()
 {
-    shifted_channel_A = g_AdcChanel_A - g_adc_avg;
-    shifted_channel_B = g_AdcChanel_B - g_adc_avg;
+    shifted_channel_A = g_AdcChanel_A - g_adc_avg; //kozepertek 0-ba tolasa
+    shifted_channel_B = g_AdcChanel_B - g_adc_avg; //kozepertek 0-ba tolasa
     float res = (float) (shifted_channel_B) / (float) (shifted_channel_A);
     return atan(res);
 }
