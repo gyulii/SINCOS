@@ -4,7 +4,7 @@
  * main.c
  */
 
-//#define NDEBUG
+#define NDEBUG
 #define Rollback 0
 
 
@@ -39,12 +39,6 @@ extern Uint16 RamfuncsRunStart;
 
 
 
-/* SEGEDVALTOZOK FINE ANGLE SZAMOLASHOZ */
-volatile float g_float_temp = 0;
-volatile int a,b;
-
-float tarolo[500];
-float tarolo_coarse[500];
 
 /*Ideiglenes szamlalo QEP teszteleshez  */
 
@@ -137,9 +131,10 @@ int main(void)
     EINT; // Enable Global interrupt INTMk
     ERTM;  // Enable Global realtime interrupt DBGM
 
-
-    LoopCount = 0;
+#ifndef NDEBUG
     ConversionCount = 0;
+#endif
+
 
     /*Adc konfiguracio*/
 
@@ -160,12 +155,12 @@ int main(void)
 
     for (;;)
     {
-#ifndef NDEBUG
-        LoopCount++;
-#endif
+
     }
 
 }
+
+
 
 __interrupt void
 adc_isr(void)
@@ -174,21 +169,14 @@ adc_isr(void)
 
     g_qepCounter = QepReadCounter();
 
-    g_AdcChanel_A = AdcReadValue_Channel_1();
-    g_AdcChanel_B = AdcReadValue_Channel_2();
+    g_AdcChanel_A = AdcReadValue_Channel_A();
+    g_AdcChanel_B = AdcReadValue_Channel_B();
 
-    find_adc_min_value();
-    find_adc_max_value();
-    g_adc_avg =  find_adc_avg();
+    adc_zero_crossing_find();
 
-    a = g_AdcChanel_A - g_adc_avg;
-    b = g_AdcChanel_B - g_adc_avg;
+    angles.angle_fine = calculate_atan();
 
-    float res = (float) b / (float) a;
-
-    angles.angle_fine = atan(res);
-
-    if(a > 0)
+    if(shifted_channel_A > 0)
     {
         angles.angle_fine = angles.angle_fine + 1.5707;
     }
@@ -196,13 +184,10 @@ adc_isr(void)
     {
         angles.angle_fine = angles.angle_fine + 4.7123;
     }
-
     angles.angle = (g_qepCounter >> 2) + (angles.angle_fine/6.28318);
+    angles.angle = angles.angle *0.3515625;  // MAGIC NUMBER  -> (360/N) * (180/PI)
+    angles.angle_coarse = g_qepCounter * 0.08789062; // MAGIC NUMBER  -> (360/4*N)
 
-    /* MAGIC NUMBER  -> (360/N) * (180/PI)     */
-    angles.angle = angles.angle *0.3515625;
-    /* MAGIC NUMBER  -> (360/4*N)    */
-    angles.angle_coarse = g_qepCounter * 0.08789062;
 #ifndef NDEBUG
     tarolo[ConversionCount] = angles.angle;
     tarolo_coarse[ConversionCount] = angles.angle_coarse;
@@ -226,14 +211,9 @@ adc_isr(void)
     {
         ConversionCount++;
     }
-
-
 #endif
 
-
-
     adc_reinit_for_next_measurment();
-    
     return;
 }
 
@@ -241,40 +221,18 @@ adc_isr(void)
 __interrupt void
 Qep_timeout_isr(void)
 {
-    //egyelore ez a resz nem teljesen vilagos, de hektikusan viselkedik a kod itt. Van amikor tem_szamlalo 1-re valt, de utana
-    //ott ragad, maskor nem csinal semmit es vegig 0
-
 #ifndef NDEBUG
     temp_szamlalo++;
 #endif
 
-
-    /*
-     *
-     * IDE JÖHET A KOD
-     *
-     * */
-
-
-
-
-
-   // EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
-
-
 #if 0
-
-    //EQep2Regs.QPOSCMP += 200 ;
-
-      // Should be in this order
-    //EQep2Regs.QCLR.bit.PCM = 1 ;         // clear PCM
+    EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
+    EQep2Regs.QPOSCMP += 200 ;
+    EQep2Regs.QCLR.bit.PCM = 1 ;         // clear PCM
 #endif
-    EQep2Regs.QCLR.bit.IEL = 1;
-    EQep2Regs.QCLR.bit.INT = 1; // CLEAR INT FLAG
-    PieCtrlRegs.PIEACK.all = PIEACK_GROUP5; // INT A
+
+    QEP_reinit_for_next_interrupt();
     return;
-
-
 }
 
 
