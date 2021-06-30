@@ -4,19 +4,20 @@
  * main.c
  */
 
-//#define NDEBUG
+#define NDEBUG
 #define Rollback 0
-
-
-
 
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
 
 #include "main.h"
 
 /*    IQ       */
+#define   MATH_TYPE      IQ_MATH
+#define GLOBAL_Q 20
+#include "IQmathLib.h"
 
 
+/*    IQ       */
 
 // Function Prototypes
 //
