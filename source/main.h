@@ -5,11 +5,21 @@
 
 #include <math.h>
 
+/*    IQ       */
+
+#define   MATH_TYPE      IQ_MATH
+/* TO DO : MELYIK A LEGJOBB Q*/
+#define GLOBAL_Q 21
+#include "IQmathLib.h"
+
+
 /*Angle calculation */
 
 
 typedef struct angles
 {
+    volatile _iq angle_in_fixed_fine;
+    volatile _iq angle_in_fixed;
     volatile float angle_fine; // Fine Resolution Angle Calculation in radian
     volatile float angle_coarse; // Coarse Resolution Angle Calculation in degree
     volatile float angle; // Interpolated High-Resolution Angle Calculation in degree
@@ -206,11 +216,16 @@ void QEP_reinit_for_next_interrupt()
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP5; // INT A
 }
 
-float calculate_atan()
+_iq calculate_atan()
 {
     shifted_channel_A = g_AdcChanel_A - g_adc_avg; //kozepertek 0-ba tolasa
     shifted_channel_B = g_AdcChanel_B - g_adc_avg; //kozepertek 0-ba tolasa
+#if 0
     float res = (float) (shifted_channel_B) / (float) (shifted_channel_A);
-    return atan(res);
+#endif
+
+    _iq res = _IQdiv((_IQ(shifted_channel_B)),_IQ(shifted_channel_A));
+    return _IQatan(res);
+
 }
 

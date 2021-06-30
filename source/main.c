@@ -11,13 +11,7 @@
 
 #include "main.h"
 
-/*    IQ       */
-#define   MATH_TYPE      IQ_MATH
-#define GLOBAL_Q 20
-#include "IQmathLib.h"
 
-
-/*    IQ       */
 
 // Function Prototypes
 //
@@ -168,22 +162,24 @@ adc_isr(void)
     adc_zero_crossing_find();
 
     //Fine Resolution Angle Calculation
-    angles.angle_fine = calculate_atan();
+    angles.angle_in_fixed_fine = calculate_atan();
 
     //Amennyiben SIN nagyobb, mint 0, akkor 90 fokot (radianban), ha kisebb akkor
     //270 fokot (radianban) adunk az arctan eredmenyehez, hogy a megfelelo felsikon helyezkedjunk el
     if(shifted_channel_A > 0)
     {
-        angles.angle_fine = angles.angle_fine + 1.5707; //(1.5707 rad = 90 fok)
+        angles.angle_in_fixed_fine = angles.angle_in_fixed_fine + _IQ(1.5707); //(1.5707 rad = 90 fok)
     }
     else
     {
-        angles.angle_fine = angles.angle_fine + 4.7123; //(4.7123 rad = 270 fok)
+        angles.angle_in_fixed_fine = angles.angle_in_fixed_fine + _IQ(4.7123); //(4.7123 rad = 270 fok)
     }
 
     //Interpolated High-Resolution Angle Calculation (360 fok radianban)
-    angles.angle = (g_qepCounter >> 2) + (angles.angle_fine*0.1591549); // MAGIC NUMBER -> (1/2*PI)
-    angles.angle = angles.angle *0.3515625;  // MAGIC NUMBER  -> (6.28318/N) * (180/PI)
+
+    angles.angle_in_fixed = (_IQ((g_qepCounter >> 2))) + (_IQrmpy((angles.angle_in_fixed_fine),(_IQ(0.1591549)))); // MAGIC NUMBER -> (1/2*PI)
+    angles.angle_in_fixed = _IQrmpy(angles.angle_in_fixed , _IQ(0.3515625));  // MAGIC NUMBER  -> (6.28318/N) * (180/PI)
+    angles.angle = _IQtoF(angles.angle_in_fixed);
     angles.angle_coarse = g_qepCounter * 0.08789062; // MAGIC NUMBER  -> (360/4*N)
 
 #ifndef NDEBUG
