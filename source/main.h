@@ -5,7 +5,7 @@ https://www.ti.com/lit/ug/tidua05a/tidua05a.pdf?ts=1611819649961&ref_url=https%2
 Link az iqmath leirasahoz:
 https://www.ti.com/lit/ug/sprugg9/sprugg9.pdf?ts=1624959457335&ref_url=https%253A%252F%252Fwww.google.com%252F  */
 
-
+//#define NDEBUG
 #include <math.h>
 
 /*    IQ       */
@@ -33,6 +33,8 @@ typedef struct angles
 #ifndef NDEBUG
 volatile Uint16  ConversionCount;
 #endif
+
+
 volatile angle_t angles;
 
 
@@ -45,7 +47,11 @@ volatile Uint16  Voltage2[1500];
 /* SEGEDVALTOZOK FINE ANGLE SZAMOLASHOZ */
 volatile float g_float_temp = 0;
 int shifted_channel_A,shifted_channel_B;
+
+#if 0
 int teszt_shifted_channel_A,teszt_shifted_channel_B;
+#endif
+
 
 #ifndef NDEBUG
 float tarolo[500];
@@ -113,7 +119,7 @@ void epwm_config()
     EPwm1Regs.ETSEL.bit.SOCASEL = 2; // Enable event time-base counter equal to period
     EPwm1Regs.ETPS.bit.SOCAPRD = 1; // Generate pulse on 1st event
 
-    EPwm1Regs.TBPRD = 3000; // Set period for ePWM1 -> 100kHz Sample
+    EPwm1Regs.TBPRD = 1500; // Set period for ePWM1 -> 100 kHz Sample
     EPwm1Regs.TBCTL.bit.CTRMODE = 0; // count up and start
 }
 

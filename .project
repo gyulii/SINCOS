@@ -24,11 +24,4 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>Meresi_adatok/Coarse es angle 2 kulonbozo forgatasnal.xlsx</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/OneDrive/Asztali%20g%C3%A9p/Coarse%20es%20angle%202%20kulonbozo%20forgatasnal.xlsx</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

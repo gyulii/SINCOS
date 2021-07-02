@@ -4,7 +4,7 @@
  * main.c
  */
 
-//#define NDEBUG
+
 #define Rollback 0
 
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
