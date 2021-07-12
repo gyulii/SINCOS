@@ -155,21 +155,20 @@ adc_isr(void)
     iq_max_arany_teszt();
     #endif
 
-    //Line count
-    g_qepCounter = QepReadCounter();
+
 
     //SIN és COS beolvasasa
     g_AdcChanel_A = AdcReadValue_Channel_A();
     g_AdcChanel_B = AdcReadValue_Channel_B();
 
-    //Kozepertek megkeresese annak erdekeben, hogy az atan fuggveny helyesen mukodjon
+
     adc_zero_crossing_find();
 
-    //Fine Resolution Angle Calculation
     angles.angle_in_fixed_fine = calculate_atan();
 
     //Amennyiben SIN nagyobb, mint 0, akkor 90 fokot (radianban), ha kisebb akkor
     //270 fokot (radianban) adunk az arctan eredmenyehez, hogy a megfelelo felsikon helyezkedjunk el
+
     if(shifted_channel_A > 0)
     {
         angles.angle_in_fixed_fine = angles.angle_in_fixed_fine + _IQ(1.5707); //(1.5707 rad = 90 fok)
@@ -179,9 +178,32 @@ adc_isr(void)
         angles.angle_in_fixed_fine = angles.angle_in_fixed_fine + _IQ(4.7123); //(4.7123 rad = 270 fok)
     }
 
+
+    //FINE IDENTIFICATION
+    angles.angle_fine_quadrant =  _IQtoF((_IQdiv(angles.angle_in_fixed_fine,_IQ(6.283185307))));
+
+    //Line count
+    g_qepCounter = QepReadCounter();
+
+    if(angles.angle_fine_quadrant < 0.25)
+    {
+        if(g_qepCounter % 4 == 3)
+            g_qepCounter++;
+    }
+
+    if(angles.angle_fine_quadrant > 0.75)
+    {
+        if(g_qepCounter % 4 == 0)
+            g_qepCounter--;
+    }
+
+    tarolo_fix[ConversionCount] = _IQtoF(angles.angle_in_fixed_fine);
+
+
     //Interpolated High-Resolution Angle Calculation (360 fok radianban)
 
-    angles.angle_in_fixed = (_IQ((g_qepCounter >> 2))) + (_IQrmpy((angles.angle_in_fixed_fine),(_IQ(0.1591549)))); // MAGIC NUMBER -> (1/2*PI)
+    angles.angle_in_fixed = (_IQ((g_qepCounter >> 2))) + (_IQdiv((angles.angle_in_fixed_fine),(_IQ(6.2831853)))); // MAGIC NUMBER -> (1/2*PI)
+
     angles.angle_in_fixed = _IQrmpy(angles.angle_in_fixed , _IQ(0.3515625));  // MAGIC NUMBER  -> (6.28318/N) * (180/PI)
     angles.angle = _IQtoF(angles.angle_in_fixed);
     angles.angle_coarse = g_qepCounter * 0.08789062; // MAGIC NUMBER  -> (360/4*N)
@@ -189,6 +211,7 @@ adc_isr(void)
 #ifndef NDEBUG
     tarolo[ConversionCount] = angles.angle;
     tarolo_coarse[ConversionCount] = angles.angle_coarse;
+
 #endif
 
 #if 0
@@ -201,7 +224,7 @@ adc_isr(void)
 #endif
 
 #ifndef NDEBUG
-    if(ConversionCount == 1500)
+    if(ConversionCount == 300)
     {
         ConversionCount = 0;
     }
