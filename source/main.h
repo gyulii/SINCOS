@@ -16,6 +16,17 @@ https://www.ti.com/lit/ug/sprugg9/sprugg9.pdf?ts=1624959457335&ref_url=https%253
 #include "IQmathLib.h"
 
 
+
+#ifndef NDEBUG
+float i1;
+int testInt;
+
+
+#endif
+
+
+
+
 /*Angle calculation */
 
 
@@ -26,6 +37,7 @@ typedef struct angles
     volatile float angle_fine; // Fine Resolution Angle Calculation in radian
     volatile float angle_coarse; // Coarse Resolution Angle Calculation in degree
     volatile float angle; // Interpolated High-Resolution Angle Calculation in degree
+    volatile float angle_fine_quadrant;
 
 }angle_t;
 
@@ -48,8 +60,9 @@ int shifted_channel_A,shifted_channel_B;
 int teszt_shifted_channel_A,teszt_shifted_channel_B;
 
 #ifndef NDEBUG
-float tarolo[500];
-float tarolo_coarse[500];
+float tarolo[300];
+float tarolo_coarse[300];
+float tarolo_fix[300];
 #endif
 
 /* QEP Globals */
@@ -66,8 +79,8 @@ volatile Uint16 g_adc_avg;
 
 volatile Uint16  g_min_value_actual = 50000;
 volatile Uint16  g_min_value_result = 55000;
-volatile Uint16  g_max_value_actual = 20000;
-volatile Uint16  g_max_value_result = 25000;
+volatile Uint16  g_max_value_actual = 500;
+volatile Uint16  g_max_value_result = 1000;
 
 #if 0
 /* iq-hoz letrehozott valtozok */
@@ -87,12 +100,12 @@ void adc_reinit_for_next_measurment()
 
 int AdcReadValue_Channel_A (void)
 {
-    return (AdcRegs.ADCRESULT0);
+    return (AdcMirror.ADCRESULT0);
 }
 
 int AdcReadValue_Channel_B (void)
 {
-   return (AdcRegs.ADCRESULT1);
+   return (AdcMirror.ADCRESULT1);
 }
 
 void adc_config()
@@ -230,6 +243,7 @@ _iq calculate_atan()
 {
     shifted_channel_A = g_AdcChanel_A - g_adc_avg; //kozepertek 0-ba tolasa
     shifted_channel_B = g_AdcChanel_B - g_adc_avg; //kozepertek 0-ba tolasa
+
 #if 0
     float res = (float) (shifted_channel_B) / (float) (shifted_channel_A);
 #endif
