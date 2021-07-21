@@ -31,7 +31,6 @@ extern Uint16 RamfuncsRunStart;
 
 
 
-
 int main(void)
 {
 
@@ -60,12 +59,6 @@ int main(void)
     EALLOW;
     SysCtrlRegs.HISPCP.all = ADC_MODCLK;
     EDIS;
-
-
-
-#if 0
-     InitGpio();
-#endif
 
 
     DINT;     // Disable CPU interrupts
@@ -224,7 +217,6 @@ adc_isr(void)
 __interrupt void
 Qep_timeout_isr(void)
 {
-
 
     QEP_reinit_for_next_interrupt();
     return;

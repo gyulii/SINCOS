@@ -181,8 +181,6 @@ void QepInit(void)
     EQep2Regs.QEPCTL.bit.QPEN=1; // eQEP position counter is enabled
     EQep2Regs.QEINT.bit.IEL = 1; // INDEX EVENT INT ENABLE
 
-
-
 }
 
 int QepReadDir(void)
