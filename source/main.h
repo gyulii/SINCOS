@@ -3,7 +3,7 @@
 https://www.ti.com/lit/ug/tidua05a/tidua05a.pdf?ts=1611819649961&ref_url=https%253A%252F%252Fwww.google.com%252F
 
 Link az iqmath leirasahoz:
-https://www.ti.com/lit/ug/sprugg9/sprugg9.pdf?ts=1624959457335&ref_url=https%253A%252F%252Fwww.google.com%252F  */
+https://www.ti.com/lit/ug/sprugg9/sprugg9.pdf?ts=1624959457335&ref_url=https%253A%252F%252Fwww.google.com%252F */
 
 //#define NDEBUG
 #define ToRemove 0
@@ -13,7 +13,7 @@ https://www.ti.com/lit/ug/sprugg9/sprugg9.pdf?ts=1624959457335&ref_url=https%253
 #include <math.h>
 
 #define   MATH_TYPE      IQ_MATH
-#define GLOBAL_Q 19                 //Tesztfuggveny alapjan kell az Q19 vagy annal kisebb.
+#define GLOBAL_Q 17                 //Tesztfuggveny alapjan kell az Q19 vagy annal kisebb.
 #include "IQmathLib.h"
 
 /*Angle calculation */
@@ -39,18 +39,14 @@ volatile angle_t angles;
 
 
 #ifndef NDEBUG
-volatile Uint16  Voltage1[300];
-volatile Uint16  Voltage2[300];
+volatile Uint16 Voltage1[300];
+volatile Uint16 Voltage2[300];
 #endif
 
 
 /* SEGEDVALTOZOK FINE ANGLE SZAMOLASHOZ */
 volatile float g_float_temp = 0;
 int shifted_channel_A,shifted_channel_B;
-
-#if 0
-int teszt_shifted_channel_A,teszt_shifted_channel_B;
-#endif
 
 
 #ifndef NDEBUG
@@ -76,12 +72,6 @@ volatile Uint16  g_min_value_actual = 50000;
 volatile Uint16  g_min_value_result = 55000;
 volatile Uint16  g_max_value_actual = 500;
 volatile Uint16  g_max_value_result = 1000;
-
-#if 0
-/* iq-hoz letrehozott valtozok */
-float teszt_g_max_value_actual=1;
-float teszt_g_max_value_result=2;
-#endif
 
 
 void adc_reinit_for_next_measurment()
@@ -180,11 +170,6 @@ void adc_zero_crossing_find()
 
 void QepInit(void)
 {
-# if ToRemove
-    EQep2Regs.QPOSCNT = 78; // test init
-    EQep2Regs.QPOSCMP = 500;
-#endif
-
 
     EQep2Regs.QUPRD=150000000;    //Unit timer period, clk -> Sysclock
     EQep2Regs.QDECCTL.bit.QSRC=0;    //quadrature mode
@@ -195,19 +180,9 @@ void QepInit(void)
     EQep2Regs.QPOSMAX=0xffffffff;
     EQep2Regs.QEPCTL.bit.QPEN=1; // eQEP position counter is enabled
     EQep2Regs.QEINT.bit.IEL = 1; // INDEX EVENT INT ENABLE
-#if ToRemove
-    EQep2Regs.QEINT.bit.UTO = 1; // TIMEOUT TIMER INT ENABLE
-#endif
 
-/*
-    EQep2Regs.QCAPCTL.bit.UPPS=2;       // 1/32 alacsony sebeseghez jo lehet
-    EQep2Regs.QCAPCTL.bit.CCPS=1;       // SYS/ 2exp7
-    EQep2Regs.QCAPCTL.bit.CEN=0;
-*/
-# if ToRemove
-    EQep2Regs.QPOSCTL.bit.PCE = 1 ; // enable position compare unit
-    EQep2Regs.QEINT.bit.PCM = 1 ;   // enable pos compare interrupt
-#endif
+
+
 }
 
 int QepReadDir(void)
@@ -233,26 +208,9 @@ _iq calculate_atan()
     shifted_channel_A = g_AdcChanel_A - g_adc_avg; //kozepertek 0-ba tolasa
     shifted_channel_B = g_AdcChanel_B - g_adc_avg; //kozepertek 0-ba tolasa
 
-#if ToRemove
-    float res = (float) (shifted_channel_B) / (float) (shifted_channel_A);
-#endif
 
     _iq res = _IQdiv((_IQ(shifted_channel_B)),_IQ(shifted_channel_A));
     return _IQatan(res);
 
 }
 
-
-#if ToRemove
-/* Megvizsgalja, hogy melyik a leheto legnagyobb atang-nal hasznalt arany ami elofordul,
- igy megallapithato, hogy melyik _iq fuggvenyt kell hasznalni a megfelelo mukodes erdekeben. */
-void iq_max_arany_teszt(){
-    teszt_shifted_channel_A = g_AdcChanel_A - g_adc_avg;
-    teszt_shifted_channel_B = g_AdcChanel_B - g_adc_avg;
-    teszt_g_max_value_actual = teszt_shifted_channel_B/teszt_shifted_channel_A;
-        if (teszt_g_max_value_actual > teszt_g_max_value_result)
-        {
-            teszt_g_max_value_result = teszt_g_max_value_actual;
-        }
-}
-#endif

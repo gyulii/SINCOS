@@ -6,7 +6,6 @@
 
 
 
-
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
 
 #include "main.h"
@@ -137,21 +136,15 @@ int main(void)
 }
 
 
-
 __interrupt void
 adc_isr(void)
 {
-    #if 0
-    iq_max_arany_teszt();
-    #endif
-
-
 
     //SIN és COS beolvasasa
     g_AdcChanel_B = AdcReadValue_Channel_B();
     g_AdcChanel_A = AdcReadValue_Channel_A();
 
-
+    //Line count
     g_qepCounter = QepReadCounter();
     tarolo_QEP[ConversionCount] = g_qepCounter;
 
@@ -177,10 +170,8 @@ adc_isr(void)
     //FINE IDENTIFICATION
     angles.angle_fine_quadrant =  _IQtoF((_IQdiv(angles.angle_in_fixed_fine,_IQ(6.283185307))));
 
-    //Line count
 
 
-#if 1
     if(angles.angle_fine_quadrant < 0.25)
     {
         if(g_qepCounter % 4 == 3)
@@ -193,11 +184,10 @@ adc_isr(void)
             g_qepCounter--;
     }
 
-#endif
 
     //Interpolated High-Resolution Angle Calculation (360 fok radianban)
 
-    angles.angle_in_fixed = (_IQ((g_qepCounter >> 2))) + (_IQdiv((angles.angle_in_fixed_fine),(_IQ(6.2831853)))); // MAGIC NUMBER -> (1/2*PI)
+    angles.angle_in_fixed = (_IQ((g_qepCounter >> 2))) + (_IQdiv((angles.angle_in_fixed_fine),(_IQ(6.2831853)))); // MAGIC NUMBER -> (1/(2*PI))
 
     angles.angle_in_fixed = _IQrmpy(angles.angle_in_fixed , _IQ(0.1757812));  // MAGIC NUMBER  -> (6.28318/N) * (180/PI)
     angles.angle = _IQtoF(angles.angle_in_fixed);
@@ -235,17 +225,9 @@ __interrupt void
 Qep_timeout_isr(void)
 {
 
-#if 0
-    EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
-    EQep2Regs.QPOSCMP += 200 ;
-    EQep2Regs.QCLR.bit.PCM = 1;         // clear PCM
-#endif
 
     QEP_reinit_for_next_interrupt();
     return;
 }
-
-
-
 
 
