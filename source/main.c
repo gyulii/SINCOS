@@ -8,15 +8,14 @@
 
 
 #include "DSP28x_Project.h"     // Device Headerfile and Examples Include File
-
 #include "main.h"
 
 
 
 // Function Prototypes
+
 //
 __interrupt void adc_isr(void);
-
 __interrupt void Qep_timeout_isr(void);
 
 
@@ -28,9 +27,6 @@ extern Uint16 RamfuncsLoadEnd;
 extern Uint16 RamfuncsRunStart;
 
 #endif
-
-
-
 
 
 int main(void)
@@ -48,12 +44,7 @@ int main(void)
     //
 #define ADC_MODCLK 0x3
 #endif
-#if (CPU_FRQ_100MHZ)
-    //
-    // HSPCLK = SYSCLKOUT/2*ADC_MODCLK2 = 100/(2*2)   = 25.0 MHz
-    //
-#define ADC_MODCLK 0x2
-#endif
+
     EDIS;
 
 /* ADC freki beaalitas */
@@ -63,10 +54,6 @@ int main(void)
     EDIS;
 
 
-
-#if 0
-     InitGpio();
-#endif
 
 
     DINT;     // Disable CPU interrupts
@@ -121,14 +108,12 @@ int main(void)
     ConversionCount = 0;
 #endif
 
-    /*Adc konfiguracio*/
+    Init_sincos_param_for_calculation();
     adc_config();
-    /*EPWM konfiguracio*/
     epwm_config();
-
     QepInit();
-
     QepGpioInit();
+
     for (;;)
     {
 
@@ -141,67 +126,31 @@ int main(void)
 __interrupt void
 adc_isr(void)
 {
-    #if 0
-    iq_max_arany_teszt();
-    #endif
 
-
-
-    //SIN és COS beolvasasa
     g_AdcChanel_B = AdcReadValue_Channel_B();
     g_AdcChanel_A = AdcReadValue_Channel_A();
 
-
     g_qepCounter = QepReadCounter();
+
+#ifndef NDEBUG
     tarolo_QEP[ConversionCount] = g_qepCounter;
+#endif
+
 
     adc_zero_crossing_find();
 
     angles.angle_in_fixed_fine = calculate_atan();
 
-    //Amennyiben SIN nagyobb, mint 0, akkor 90 fokot (radianban), ha kisebb akkor
-    //270 fokot (radianban) adunk az arctan eredmenyehez, hogy a megfelelo felsikon helyezkedjunk el
+    fine_angle_correction_for_360_degree();
 
-    if(shifted_channel_A > 0)
-    {
-        angles.angle_in_fixed_fine = angles.angle_in_fixed_fine + _IQ(1.5707); //(1.5707 rad = 90 fok)
-    }
-    else
-    {
-        angles.angle_in_fixed_fine = angles.angle_in_fixed_fine + _IQ(4.7123); //(4.7123 rad = 270 fok)
-    }
-
-
-    tarolo_fix[ConversionCount] = _IQtoF(angles.angle_in_fixed_fine);;
-
-    //FINE IDENTIFICATION
-    angles.angle_fine_quadrant =  _IQtoF((_IQdiv(angles.angle_in_fixed_fine,_IQ(6.283185307))));
-
-    //Line count
-
-
-#if 1
-    if(angles.angle_fine_quadrant < 0.25)
-    {
-        if(g_qepCounter % 4 == 3)
-            g_qepCounter++;
-    }
-
-    if(angles.angle_fine_quadrant > 0.75)
-    {
-        if(g_qepCounter % 4 == 0)
-            g_qepCounter--;
-    }
-
+#ifndef NDEBUG
+    tarolo_fix[ConversionCount] = _IQtoF(angles.angle_in_fixed_fine);
 #endif
+    QEP_latch_error_fix_due_to_phaseshift();
 
-    //Interpolated High-Resolution Angle Calculation (360 fok radianban)
+    calculate_interpolated_high_res_angle();
 
-    angles.angle_in_fixed = (_IQ((g_qepCounter >> 2))) + (_IQdiv((angles.angle_in_fixed_fine),(_IQ(6.2831853)))); // MAGIC NUMBER -> (1/2*PI)
-
-    angles.angle_in_fixed = _IQrmpy(angles.angle_in_fixed , _IQ(0.1757812));  // MAGIC NUMBER  -> (6.28318/N) * (180/PI)
-    angles.angle = _IQtoF(angles.angle_in_fixed);
-    angles.angle_coarse = g_qepCounter * 0.043945312; // MAGIC NUMBER  -> (360/4*N)
+    calculate_coarse_angle();
 
 #ifndef NDEBUG
     tarolo[ConversionCount] = angles.angle;
@@ -234,13 +183,6 @@ adc_isr(void)
 __interrupt void
 Qep_timeout_isr(void)
 {
-
-#if 0
-    EQep2Regs.QCLR.bit.UTO = 1; // CLEAR TIMEOUT FLAG
-    EQep2Regs.QPOSCMP += 200 ;
-    EQep2Regs.QCLR.bit.PCM = 1;         // clear PCM
-#endif
-
     QEP_reinit_for_next_interrupt();
     return;
 }
