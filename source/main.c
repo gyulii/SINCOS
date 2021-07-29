@@ -111,8 +111,13 @@ int main(void)
     Init_sincos_param_for_calculation();
     adc_config();
     epwm_config();
+
+#if 0
     QepInit();
     QepGpioInit();
+#endif
+    QepInit_DCU_TTL();
+    QepGpioInit_DCU_TTL();
 
     for (;;)
     {
@@ -129,8 +134,11 @@ adc_isr(void)
 
     g_AdcChanel_B = AdcReadValue_Channel_B();
     g_AdcChanel_A = AdcReadValue_Channel_A();
-
+#if 0
     g_qepCounter = QepReadCounter();
+#endif
+
+    g_qepCounter = QepReadCounter_DCU_TTL();
 
 #ifndef NDEBUG
     tarolo_QEP[ConversionCount] = g_qepCounter;

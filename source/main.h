@@ -120,6 +120,24 @@ void QepGpioInit(void)
     EDIS;
 }
 
+void QepGpioInit_DCU_TTL(void)
+{
+   EALLOW;
+   /* Pull up*/
+    GpioCtrlRegs.GPBPUD.bit.GPIO50 = 0;
+    GpioCtrlRegs.GPBPUD.bit.GPIO51 = 0;
+    GpioCtrlRegs.GPBPUD.bit.GPIO53 = 0;
+    /* Clk enable */
+    GpioCtrlRegs.GPBQSEL2.bit.GPIO50 = 0;
+    GpioCtrlRegs.GPBQSEL2.bit.GPIO51 = 0;
+    GpioCtrlRegs.GPBQSEL2.bit.GPIO53 = 0;
+    /*  Function define */
+    GpioCtrlRegs.GPBMUX2.bit.GPIO50 = 1;
+    GpioCtrlRegs.GPBMUX2.bit.GPIO51 = 1;
+    GpioCtrlRegs.GPBMUX2.bit.GPIO53 = 1;
+    EDIS;
+}
+
 void QepInit(void)
 {
     EQep2Regs.QUPRD=150000000;    //Unit timer period, clk -> Sysclock
@@ -133,6 +151,21 @@ void QepInit(void)
     EQep2Regs.QEINT.bit.IEL = 1; // INDEX EVENT INT ENABLE
 }
 
+
+void QepInit_DCU_TTL(void)
+{
+
+    EQep1Regs.QUPRD=150000000;    //Unit timer period, clk -> Sysclock
+    EQep1Regs.QDECCTL.bit.QSRC=0;    //quadrature mode
+    EQep1Regs.QEPCTL.bit.FREE_SOFT=2; // emulation kikapcsolasa
+    EQep1Regs.QEPCTL.bit.PCRM=0; // Reset on COMP R
+    EQep1Regs.QEPCTL.bit.UTE=1; // Unit timer enable
+    EQep1Regs.QEPCTL.bit.QCLM=1; // Position counter (QPOSLAT), capture timer (QCTMRLAT)  and capture period (QCPRDLAT) values are latched ON TIMEOUT
+    EQep1Regs.QPOSMAX=0xffffffff;
+    EQep1Regs.QEPCTL.bit.QPEN=1; // eQEP position counter is enabled
+    EQep1Regs.QEINT.bit.IEL = 1; // INDEX EVENT INT ENABLE
+}
+
 int QepReadDir(void)
 {
     return EQep2Regs.QEPSTS.bit.QDF;
@@ -142,6 +175,13 @@ int QepReadCounter(void)
 {
     return EQep2Regs.QPOSCNT;
 }
+
+int QepReadCounter_DCU_TTL(void)
+{
+    return EQep1Regs.QPOSCNT;
+}
+
+
 
 void QEP_reinit_for_next_interrupt()
 {
